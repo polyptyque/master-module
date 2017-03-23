@@ -1,0 +1,21 @@
+label.field-camera-shooter{
+    display: none;
+}
+.shoot-button{
+    display: block;
+    float: left;
+    clear: both;
+    padding: 40px;
+    font-size:3em;
+    margin: 40px 0;
+    min-width: 10em;
+}
+.btn.shoot-button,.btn.shoot-button:focus,.btn.shoot-button:active{
+    outline: none;
+}
+.shoot-button + p{
+    clear: both;
+}
+.choice{
+    display: block;
+}

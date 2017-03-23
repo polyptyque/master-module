@@ -1,0 +1,58 @@
+<div class="container step-{{step}}">
+    <h1 class="h1">{{topic}}
+        <small>{{stepNumber}}/{{totalStep}}</small>
+    </h1>
+    <form id="step-form" action="{{nextStepAction}}" method="post">
+
+        <!-- responses -->
+        {{#each responses}}
+               <input type="hidden" name="{{@key}}" value="{{this}}">
+        {{/each}}
+
+        <!-- questions -->
+        {{#each fields}}
+
+            <fieldset class="form-group">
+
+                <label for="field-{{id}}" class="field-{{type}}">{{label}}</label>
+
+                {{#ifvalue type value="text"}}
+                <input id="field-{{id}}" name="{{id}}" type="text" placeholder="{{placeholder}}" class="form-control" value="{{response}}" />
+                {{/ifvalue}}
+
+                {{#ifvalue type value="textarea"}}
+                <textarea id="field-{{id}}" rows="{{rows}}" name="{{id}}" type="text" placeholder="{{placeholder}}" class="form-control" ></textarea>
+                {{/ifvalue}}
+
+                {{#ifvalue type value="radio"}}
+                    {{#each choices}}
+                            <label class="choice" for="field-{{id}}-{{index}}">
+                                <input id="field-{{id}}-{{index}}" name="{{id}}" value="{{value}}" type="radio" {{checked}} />
+                                {{label}}
+                            </label>
+                    {{/each}}
+                {{/ifvalue}}
+
+                {{#ifvalue type value="camera-shooter"}}
+                    <button class="shoot-button btn btn-main btn-danger" id="shoot-button" type="button"><i class="glyphicon glyphicon-camera"></i></button>
+                    <p>{{description}}</p>
+                {{/ifvalue}}
+
+            </fieldset>
+
+        {{/each}}
+        <hr />
+
+        <div class="form-group clearfix">
+        {{#if prevStep}}
+            <button id="btn-back" data-action="{{prevStepAction}}" type="submit" class="btn btn-default pull-left">étape précédente</button>
+        {{/if}}
+        {{#if nextStep}}
+            <input class="btn btn-default pull-right" type="submit" value="étape suivante" >
+        {{/if}}
+        </div>
+    </form>
+
+    <hr />
+    <a class="reset" href="/">Recommencer depuis le début.</a>
+</div>

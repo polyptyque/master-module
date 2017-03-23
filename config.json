@@ -1,3 +1,185 @@
 {
-  "PORT":"8080"
+  "PORT":"8080",
+  "name":"Polyptyque",
+  "description":"description du projet ...",
+  "steps":[
+    {
+      "topic":"Qui êtes vous ?",
+      "fields":[
+        {
+          "id":"firstname",
+          "label":"Prénom",
+          "type":"text"
+        },
+        {
+          "id":"lastname",
+          "label":"Nom",
+          "type":"text"
+        }
+      ]
+    },
+    {
+      "topic":"Intérêt",
+      "fields":[
+        {
+          "id":"hobby",
+          "label":"Quelle est votre occupation préférée ?",
+          "type":"radio",
+          "choices":[
+            {
+              "value":"sport",
+              "label":"Faire du sport"
+            },
+            {
+              "value":"food",
+              "label":"Manger"
+            },
+            {
+              "value": "music",
+              "label": "Écouter de la musique"
+            },
+            {
+              "value":"sleeping",
+              "label":"Dormir"
+            }
+          ]
+        },
+        {
+          "id":"preference",
+          "label":"Vous préférez ?",
+          "type":"radio",
+          "choices":[
+            {
+              "value":"jumthewindow",
+              "label":"Sauter par le fenêtre"
+            },
+            {
+              "value":"eatyourfeces",
+              "label":"Manger vos excréments"
+            },
+            {
+              "value": "runnakedonthestreet",
+              "label": "Courir tout nu dans la rue"
+            },
+            {
+              "value":"burnyourfingers",
+              "label":"Vous bruler les doigts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic":"Projection",
+      "fields":[
+        {
+          "id":"job",
+          "label":"Quel serait le métier de vos rêves ?",
+          "type":"radio",
+          "choices":[
+            {
+              "value":"patissier",
+              "label":"Pâtissier(ière)"
+            },
+            {
+              "value":"rentier",
+              "label":"Rentier(ière)"
+            },
+            {
+              "value":"stewart",
+              "label":"Stewart ou Hôtesse de l’air"
+            },
+            {
+              "value":"stylist",
+              "label":"Styliste"
+            }
+          ]
+        },
+        {
+          "id":"money",
+          "label":"Que feriez-vous pour de l’argent ?",
+          "type":"radio",
+          "choices":[
+            {
+              "value":"kill",
+              "label":"Tuer un membre de votre famille"
+            },
+            {
+              "value":"organ",
+              "label":"Donner un organe"
+            },
+            {
+              "value":"drugs",
+              "label":"Vendre de la drogue"
+            },
+            {
+              "value":"cutlittlefinger",
+              "label":"Vous couper le petit doigt de pied sans anesthésie"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic":"Connaissance",
+      "fields":[
+        {
+          "id":"lenaintillemon",
+          "label":"Qui était Monsieur Lenain de Tillemont ?",
+          "type":"radio",
+          "choices":[
+            {
+              "value":"king",
+              "label":"Un roi"
+            },
+            {
+              "value":"accordeonist",
+              "label":"Un accordéoniste"
+            },
+            {
+              "value":"historian",
+              "label":"Un historien"
+            },
+            {
+              "value":"philosoph",
+              "label":"Un philosophe"
+            }
+          ]
+        },
+        {
+          "id":"narvalo",
+          "label":"Que veut dire l’expression « être un narvalo » ?",
+          "type":"radio",
+          "choices":[
+            {
+              "value":"mad",
+              "label":"Être fou(olle)"
+            },
+            {
+              "value":"robber",
+              "label":"Être un voleur(euse)"
+            },
+            {
+              "value":"kind",
+              "label":"Être gentil(le)"
+            },
+            {
+              "value":"fun",
+              "label":"Être drôle"
+            }
+          ]
+        }
+      ]
+    },{
+      "topic":"Prise de vue",
+      "fields":[
+        {
+          "id":"camera",
+          "label":"Déclencher",
+          "type":"camera-shooter",
+          "description":"La prise de vue se déclenchera après 3 secondes d’attente"
+        }
+      ]
+    }
+  ]
 }

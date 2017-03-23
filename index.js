@@ -1,12 +1,40 @@
 // express js app
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+//
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+    extended: true
+}));
 //
 var config = require('./config.json');
+//
+var _ = require('underscore');
 //
 var fs = require('fs.extra');
 var multiparty = require('multiparty');
 var util = require('util');
+//
+// express handlerbars template
+var exphbs  = require('express-handlebars');
+var hbs = exphbs.create({
+    helpers:{
+        ifvalue:function (conditional, options) {
+            if (options.hash.value === conditional) {
+                //console.log('ifvalue YES',conditional,'==',options.hash.value);
+                return options.fn(this)
+            } else {
+                //console.log('ifvalue NO',conditional,'==',options.hash.value);
+                return options.inverse(this);
+            }
+        }
+    }
+});
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+app.enable('view cache');
+
 
 const PORT=config.PORT;
 
@@ -31,12 +59,7 @@ function postImage(req, res) {
     form.parse(req, function (err, fields, files) {
         res.writeHead(200, {'content-type': 'text/plain'});
         res.write('received upload:\n\n');
-        /*
-        files.images.forEach(function(image){
-           var name = image.fieldName;
-            console.log(image);
-        });
-        */
+
         var a = files.a[0], b = files.b[0];
         function Copy(from){
             var name = from.fieldName;
@@ -62,9 +85,83 @@ function postImage(req, res) {
 app.post('/post',postImage);
 
 // Home
-app.get('/',function(req,res){
-    res.send('Polyptyque master module OK.');
+function Home(req, res, next) {
+    console.log('Home.');
+    console.log(req.body);
+    res.render('home', _(config).extend({layout: 'main',title:config.name}));
+}
+app.get('/', Home);
+app.post('/', Home);
+
+// Steps
+app.use('/step-:step', function (req, res, next) {
+    var step = parseInt(req.params.step),
+        stepNumber = step+1,
+        nextStep = (step+1),
+        prevStep = (step-1),
+        totalStep = config.steps.length,
+        responses = _({}).extend(req.body)
+        ;
+    var stepConfig = config.steps[step];
+
+    if(!stepConfig) return next();
+
+    stepConfig.fields.forEach(function(field){
+
+        var response = responses[field.id];
+        delete responses[field.id];
+
+        if(response){
+            field.response = response;
+            console.log(field.id,response)
+            //field.value=responses[field.id];
+        }
+
+        if(field.type == 'radio'){
+            // map id
+            field.choices.forEach(function(choice,index){
+                choice.id = field.id;
+                choice.index = index;
+                choice.checked = response == choice.value ? "checked":"";
+            });
+        }
+    });
+
+    console.log(responses);
+
+    var options = {
+            layout: 'main',
+            title:'Polyptyque - étape '+step,
+            step:step,
+            stepNumber:stepNumber,
+            totalStep:totalStep,
+            responses:responses
+        };
+    console.log("step %s",step,step>=0);
+    if(step>0){
+        options = _.extend(options,{
+            prevStep:prevStep.toString(),
+            prevStepAction:'step-'+(step-1),
+        })
+    }else{
+        options.prevStepAction = '/';
+    }
+
+    if(stepNumber<totalStep){
+        options = _.extend(options,{
+            nextStep:nextStep,
+            nextStepAction:'step-'+(step+1),
+        })
+    }else{
+        options.nextStepAction = 'step-complete'
+    }
+
+    options = _(options).extend(stepConfig);
+    res.render('step', options);
 });
+
+// static public
+app.use(express.static('public'));
 
 // 404
 app.use(function(req, res, next) {
