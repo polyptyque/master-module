@@ -8,7 +8,8 @@ label.field-camera-shooter{
     padding: 40px;
     font-size:3em;
     margin: 40px 0;
-    min-width: 10em;
+    width: 10em;
+    max-width:100%;
 }
 .btn.shoot-button,.btn.shoot-button:focus,.btn.shoot-button:active{
     outline: none;
