@@ -1,9 +1,8 @@
 <div class="container step-{{step}}">
-    <h1 class="h1">{{topic}}
-        <small>{{stepNumber}}/{{totalStep}}</small>
-    </h1>
     <form id="step-form" action="{{nextStepAction}}" method="post">
-
+        <h1 class="h1">{{topic}}
+            <small>{{stepNumber}}/{{totalStep}}</small>
+        </h1>
         <!-- responses -->
         {{#each responses}}
                <input type="hidden" name="{{@key}}" value="{{this}}">

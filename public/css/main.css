@@ -20,3 +20,10 @@ label.field-camera-shooter{
 .choice{
     display: block;
 }
+
+iframe.demo{
+    background:#333;
+    width:100%;
+    height:calc(100vh - 10rem);
+    border:none;
+}

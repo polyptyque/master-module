@@ -29,6 +29,12 @@ jQuery(document).ready(function($){
                     setTimeout(Timout,1000);
                 }
             }
+            function ResetButton(){
+                button.attr('disabled',false);
+                button.html('<i class="glyphicon glyphicon-camera"></i>')
+                button.addClass('btn-danger')
+                      .removeClass('btn-warning')
+            }
             function Complete(){
                 button.html('<i class="glyphicon glyphicon-flash"></i>');
                 button.removeClass('btn-danger')
@@ -39,11 +45,38 @@ jQuery(document).ready(function($){
                         data[o.name] = o.value;
                 });
                 console.log(data);
-                $.ajax({url:'/shot',method:'post',dataType:'json',data:data});
+                $.ajax(
+                    {
+                        url:'/shot',
+                        method:'post',
+                        dataType:'json',
+                        data:data
+                    }
+                ).done(function(status,data){
+                    console.log(status,data);
+                    ResetButton();
+                }).fail(function(res,type,status){
+                    console.log(arguments);
+                    var data = res.responseJSON || {status:status};
+                    setTimeout(function(){
+                        ResetButton();
+                        console.log(data);
+                        switch(data.status){
+                            case 'MODULE_NOT_AVAILABLE' :
+                                //alert('Les modules ne semblent pas disponible. La suite est donc en mode démonstration.');
+                                ResultDemo();
+                                break;
+                        }
+                    },1000)
+                })
             }
             Timout();
         }
     });
+
+    function ResultDemo(){
+        stepForm.html('<iframe class="demo" href="http://polyptyque.photo"></iframe>');
+    }
 
     $(document).ready(function(){
         // iOS web app full screen hacks.

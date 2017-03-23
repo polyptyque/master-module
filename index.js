@@ -81,8 +81,16 @@ function postImage(req, res) {
     });
 }
 
-// Post
+// Post Image
 app.post('/post',postImage);
+
+// Ask camera shot from web interface
+function shot(req,res,next){
+    res.status(500).json({status:'MODULE_NOT_AVAILABLE'});
+}
+
+// Shot
+app.post('/shot',shot)
 
 // Home
 function Home(req, res, next) {
