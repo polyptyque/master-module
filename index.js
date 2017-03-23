@@ -1,10 +1,14 @@
+// express js app
 var express = require('express');
+var app = express();
+//
+var config = require('./config.json');
+//
 var fs = require('fs.extra');
 var multiparty = require('multiparty');
 var util = require('util');
 
-const PORT=8080;
-var app = express();
+const PORT=config.PORT;
 
 var cacheDir = './cache/';
 if (!fs.existsSync(cacheDir)){
@@ -15,6 +19,7 @@ function postImage(req, res) {
     var headers = req.headers;
     var uploadDir = cacheDir+headers['x-mod-id']+'/';
 
+    console.log('Images are posted...');
     console.log(headers);
 
     if (!fs.existsSync(uploadDir)){
