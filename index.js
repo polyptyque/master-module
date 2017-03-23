@@ -1,9 +1,10 @@
-var http = require('http');
+var express = require('express');
 var fs = require('fs.extra');
 var multiparty = require('multiparty');
 var util = require('util');
 
 const PORT=8080;
+var app = express();
 
 var cacheDir = './cache/';
 if (!fs.existsSync(cacheDir)){
@@ -11,10 +12,9 @@ if (!fs.existsSync(cacheDir)){
 }
 
 function postImage(req, res) {
-    var body = [];
     var headers = req.headers;
-    var userAgent = headers['user-agent'],
-        uploadDir = cacheDir+headers['x-mod-id']+'/';
+    var uploadDir = cacheDir+headers['x-mod-id']+'/';
+
     console.log(headers);
 
     if (!fs.existsSync(uploadDir)){
@@ -50,31 +50,23 @@ function postImage(req, res) {
         }
         Copy(a)
 
-
-
     });
-    //res.end('OK.');
 }
 
-function handleRequest(request, response){
-    switch(request.url){
-        case '/':
-            response.end('Polyptyque master module OK.');
-            break;
-        case '/post':
-            //if(request.method == 'post'){
-                postImage(request,response);
-                //response.end('Post \n');
-            break;
-            //}
-        default:
-            response.statusCode = 404;
-            response.end('404 not found \n'+request.url);
-    }
-}
+// Post
+app.post('/post',postImage);
 
-var server = http.createServer(handleRequest);
-
-server.listen(PORT, function(){
-    console.log("Server listening on: http://localhost:%s", PORT);
+// Home
+app.get('/',function(req,res){
+    res.send('Polyptyque master module OK.');
 });
+
+// 404
+app.use(function(req, res, next) {
+    res.status(404).end('404 not found \n'+req.url);
+});
+
+// Server
+app.listen(PORT, function(){
+    console.log("Server listening on: http://localhost:%s", PORT);
+})
