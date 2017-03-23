@@ -3,7 +3,7 @@ module maître `master`, qui centralise l’installation *Polyptyque* — locale
 
 ## installation
 
-Require l’installation préalable de [node](https://nodejs.org/)
+Require l’installation préalable de [node](https://nodejs.org/). Ensuite, depuis la racine du projet, il suffit de taper dans le terminal : 
 
     npm install
 
@@ -24,17 +24,17 @@ Sur un réseau interne on peut accéder au site depuis un autre appareil, avec l
 
 ## configuration 
 
-Le fichier de configuration est le fichier `config.json` au format `JSON`
+Le fichier de configuration est le fichier `config.json` au format `JSON`.
 
-les étapes du formulaires sont représentées par le tableau `steps`. Les questions/champs des étapes sont représentées par le tableau `fields`
+Les étapes du formulaires sont représentées par le tableau `steps`. Les questions/champs des étapes sont représentées par le tableau `fields`
 
 ## templates html
 
-Les templates html du formulaire utilise handlebars
-et sont localisés dans le dossier `views/` et ses sous-dossiers.
+Les templates html du formulaire utilise [handlebars](http://handlebarsjs.com/)
+et sont localisés dans le dossier `views` et ses sous-dossiers.
 
 Par exemple le layout principal est dans `views/layouts/main`
 
 ## styles CSS
 
-Les styles de bases s’appuie sur [Bootstrap](http://getbootstrap.com/). Les surcharges CSS peuvent se faire dans le fichier `public/css/main.css`
+Les styles de bases s’appuient sur [Bootstrap](http://getbootstrap.com/). Les surcharges CSS peuvent se faire dans le fichier `public/css/main.css`
