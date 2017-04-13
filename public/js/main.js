@@ -26,7 +26,7 @@ jQuery(document).ready(function($){
                 }else{
                     button.text(i);
                     i--;
-                    setTimeout(Timout,1000);
+                    setTimeout(Timout,200);
                 }
             }
             function ResetButton(){
@@ -58,6 +58,7 @@ jQuery(document).ready(function($){
                 }).fail(function(res,type,status){
                     console.log(arguments);
                     var data = res.responseJSON || {status:status};
+                    /*
                     setTimeout(function(){
                         ResetButton();
                         console.log(data);
@@ -68,6 +69,8 @@ jQuery(document).ready(function($){
                                 break;
                         }
                     },1000)
+                    */
+                    ResetButton();
                 })
             }
             Timout();

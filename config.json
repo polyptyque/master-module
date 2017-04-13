@@ -1,5 +1,6 @@
 {
-  "PORT":"8080",
+  "HTTP_PORT":"8080",
+  "UDP_PORT":"9000",
   "name":"Polyptyque",
   "description":"description du projet ...",
   "steps":[

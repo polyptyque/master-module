@@ -36,12 +36,26 @@ app.set('view engine', 'handlebars');
 app.enable('view cache');
 
 
-const PORT=config.PORT;
+const HTTP_PORT=config.HTTP_PORT;
+const UDP_PORT=config.UDP_PORT;
 
 var cacheDir = './cache/';
 if (!fs.existsSync(cacheDir)){
     fs.mkdirSync(cacheDir);
 }
+
+// UDP Client
+const dgram = require('dgram');
+var client = dgram.createSocket(
+    {
+        type:"udp4",
+        reuseAddr:true
+    }
+);
+client.bind(function() {
+    console.log('client UDP setBroadcast');
+    client.setBroadcast(true);
+});
 
 function postImage(req, res) {
     var headers = req.headers;
@@ -86,20 +100,16 @@ app.post('/post',postImage);
 
 // Ask camera shot from web interface
 function shot(req,res,next){
+    var message = "MASTER",
+        ip = '255.255.255.255';
+        //ip = '192.168.255.255';
+    client.send(message, 0, message.length, UDP_PORT,ip);
+    console.log('sending shot ! port :',UDP_PORT,'ip',ip);
     res.status(500).json({status:'MODULE_NOT_AVAILABLE'});
 }
 
 // Shot
-app.post('/shot',shot)
-
-// Home
-function Home(req, res, next) {
-    console.log('Home.');
-    console.log(req.body);
-    res.render('home', _(config).extend({layout: 'main',title:config.name}));
-}
-app.get('/', Home);
-app.post('/', Home);
+app.post('/shot',shot);
 
 // Steps
 app.use('/step-:step', function (req, res, next) {
@@ -168,6 +178,15 @@ app.use('/step-:step', function (req, res, next) {
     res.render('step', options);
 });
 
+// Home
+function Home(req, res, next) {
+    console.log('Home.');
+    console.log(req.body);
+    res.render('home', _(config).extend({layout: 'main',title:config.name}));
+}
+app.get('/', Home);
+app.post('/', Home);
+
 // static public
 app.use(express.static('public'));
 
@@ -177,6 +196,6 @@ app.use(function(req, res, next) {
 });
 
 // Server
-app.listen(PORT, function(){
-    console.log("Server listening on: http://localhost:%s", PORT);
-})
+app.listen(HTTP_PORT, function(){
+    console.log("Server listening on: http://localhost:%s", HTTP_PORT);
+});
