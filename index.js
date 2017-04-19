@@ -59,7 +59,8 @@ client.bind(function() {
 
 function postImage(req, res) {
     var headers = req.headers;
-    var uploadDir = cacheDir+headers['x-mod-id']+'/';
+    var imgPrefix = headers['x-img-prefix'],
+    uploadDir = cacheDir+headers['x-mod-id']+'/';
 
     console.log('Images are posted...');
     console.log(headers);
@@ -78,7 +79,7 @@ function postImage(req, res) {
         function Copy(from){
             var name = from.fieldName;
             console.log('Copy '+name+'.');
-            fs.copy(from.path,uploadDir+name+'.jpg',{replace:true},function(err){
+            fs.copy(from.path,uploadDir+imgPrefix+name+'.jpg',{replace:true},function(err){
                 if(err){
                     res.statusCode = '500';
                     res.end(err);
