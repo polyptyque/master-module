@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 //
 var config = require('./config.json');
+var sha1 = require('sha1');
 //
 var _ = require('underscore');
 //
@@ -59,8 +60,9 @@ client.bind(function() {
 
 function postImage(req, res) {
     var headers = req.headers;
-    var imgPrefix = headers['x-img-prefix'],
-    uploadDir = cacheDir+headers['x-mod-id']+'/';
+    var shotId = headers['x-shot-id'],
+        modId = headers['x-mod-id'],
+    uploadDir = cacheDir+shotId+'/';
 
     console.log('Images are posted...');
     console.log(headers);
@@ -79,7 +81,7 @@ function postImage(req, res) {
         function Copy(from){
             var name = from.fieldName;
             console.log('Copy '+name+'.');
-            fs.copy(from.path,uploadDir+imgPrefix+name+'.jpg',{replace:true},function(err){
+            fs.copy(from.path,uploadDir+modId+'-'+name+'.jpg',{replace:true},function(err){
                 if(err){
                     res.statusCode = '500';
                     res.end(err);
@@ -101,12 +103,12 @@ app.post('/post',postImage);
 
 // Ask camera shot from web interface
 function shot(req,res,next){
-    var message = "MASTER",
+    var message = {action:"shot",id:sha1(Math.random())},
+        messageStr = JSON.stringify(message),
         ip = '255.255.255.255';
-        //ip = '192.168.255.255';
-    client.send(message, 0, message.length, UDP_PORT,ip);
+    client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
     console.log('sending shot ! port :',UDP_PORT,'ip',ip);
-    res.status(500).json({status:'MODULE_NOT_AVAILABLE'});
+    res.status(500).json({status:'DEMO',id:message.id});
 }
 
 // Shot
@@ -190,6 +192,7 @@ app.post('/', Home);
 
 // static public
 app.use(express.static('public'));
+app.use('/cache',express.static('cache'));
 
 // 404
 app.use(function(req, res, next) {
