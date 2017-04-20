@@ -199,7 +199,16 @@ app.use(function(req, res, next) {
     res.status(404).end('404 not found \n'+req.url);
 });
 
+// Socket server
+console.log('starting socket.io');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+io.on('connection', function (socket) {
+    console.log('a user connected');
+});
+
 // Server
 app.listen(HTTP_PORT, function(){
-    console.log("Server listening on: http://localhost:%s", HTTP_PORT);
+    console.log("Server listening on: http://*:%s", HTTP_PORT);
 });
