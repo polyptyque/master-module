@@ -1,6 +1,7 @@
 jQuery(document).ready(function($){
 
-    var stepForm = $('#step-form');
+    var stepForm = $('#step-form'),
+        shotId;
 
     $('#btn-back').click(function(e){
         var action = $(this).data('action');
@@ -45,7 +46,7 @@ jQuery(document).ready(function($){
                         data[o.name] = o.value;
                 });
                 console.log(data);
-                var previews = ['1-a','1-b','2-a','2-b'];
+                $('.pv').addClass('loading').css('backgroundImg',false);
                 $.ajax(
                     {
                         url:'/shot',
@@ -53,8 +54,9 @@ jQuery(document).ready(function($){
                         dataType:'json',
                         data:data
                     }
-                ).done(function(status,data){
-                    console.log(status,data);
+                ).done(function(data,status){
+                    console.log(status,data,data.id);
+                    shotId = data.id;
                     setTimeout(function(){
                         ResetButton();
                     },1000);
@@ -93,11 +95,13 @@ jQuery(document).ready(function($){
         }
     });
 
-    var socket = io();
-    /*var socket = io.connect('http://localhost:8080');
-    socket.on('news', function (data) {
-        console.log(data);
-        socket.emit('my other event', { my: 'data' });
-    });*/
+    var socket = io.connect('http://localhost:8080');
+    socket.on('postImage', function (data) {
+        console.log(data,shotId);
+        if(data.shotId == shotId){
+            $('#pv-'+data.modId+'-'+data.name).removeClass('loading').css({backgroundImage:'url('+data.filePath+')'})
+        }
+        //socket.emit('my other event', { my: 'data' });
+    });
 
 });

@@ -40,10 +40,23 @@ app.enable('view cache');
 const HTTP_PORT=config.HTTP_PORT;
 const UDP_PORT=config.UDP_PORT;
 
-var cacheDir = './cache/';
+var cacheDir = 'cache/';
 if (!fs.existsSync(cacheDir)){
     fs.mkdirSync(cacheDir);
 }
+
+
+// Socket server
+console.log('starting socket.io');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+
+io.on('connection', function(socket){
+    socket.on('chat message', function(msg){
+        io.emit('chat message', msg);
+    });
+});
 
 // UDP Client
 const dgram = require('dgram');
@@ -79,9 +92,12 @@ function postImage(req, res) {
 
         var a = files.a[0], b = files.b[0];
         function Copy(from){
-            var name = from.fieldName;
-            console.log('Copy '+name+'.');
-            fs.copy(from.path,uploadDir+modId+'-'+name+'.jpg',{replace:true},function(err){
+            var name = from.fieldName,
+                filePath = uploadDir+modId+'-'+name+'.jpg';
+            console.log('Copy '+name+'.',filePath);
+            fs.copy(from.path,filePath,{replace:true},function(err){
+                // envoie un message via socket.io
+                io.emit('postImage', {filePath:filePath,shotId:shotId,modId:modId,name:name});
                 if(err){
                     res.statusCode = '500';
                     res.end(err);
@@ -194,21 +210,12 @@ app.post('/', Home);
 app.use(express.static('public'));
 app.use('/cache',express.static('cache'));
 
-// 404
-app.use(function(req, res, next) {
-    res.status(404).end('404 not found \n'+req.url);
+http.listen(HTTP_PORT, function(){
+    console.log('listening on *:' + HTTP_PORT);
+    // 404
+    app.use(function(req, res, next) {
+        res.status(404).end('404 not found \n'+req.url);
+    });
 });
 
-// Socket server
-console.log('starting socket.io');
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
-io.on('connection', function (socket) {
-    console.log('a user connected');
-});
-
-// Server
-app.listen(HTTP_PORT, function(){
-    console.log("Server listening on: http://*:%s", HTTP_PORT);
-});
