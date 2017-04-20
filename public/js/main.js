@@ -45,6 +45,7 @@ jQuery(document).ready(function($){
                         data[o.name] = o.value;
                 });
                 console.log(data);
+                var previews = ['1-a','1-b','2-a','2-b'];
                 $.ajax(
                     {
                         url:'/shot',
@@ -54,7 +55,9 @@ jQuery(document).ready(function($){
                     }
                 ).done(function(status,data){
                     console.log(status,data);
-                    ResetButton();
+                    setTimeout(function(){
+                        ResetButton();
+                    },1000);
                 }).fail(function(res,type,status){
                     console.log(arguments);
                     var data = res.responseJSON || {status:status};
@@ -63,16 +66,8 @@ jQuery(document).ready(function($){
                         console.log(data);
                         switch(data.status){
                             case 'MODULE_NOT_AVAILABLE' :
-                                //alert('Les modules ne semblent pas disponible. La suite est donc en mode démonstration.');
-                                //ResultDemo();
-                                break;
-                            case 'DEMO':
-                                console.log(data.id);
-                                var previews = ['1-a','1-b','2-a','2-b'];
-                                _(previews).each(function(id){
-                                    var backgroundImage = 'url(cache/'+data.id+'/'+id+'.jpg)';
-                                   $('#pv-'+id).css({backgroundImage:backgroundImage})
-                                });
+                                alert('Les modules ne semblent pas disponible. La suite est donc en mode démonstration.');
+                                ResultDemo();
                                 break;
                         }
                     },3000);

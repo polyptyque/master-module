@@ -108,7 +108,7 @@ function shot(req,res,next){
         ip = '255.255.255.255';
     client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
     console.log('sending shot ! port :',UDP_PORT,'ip',ip);
-    res.status(500).json({status:'DEMO',id:message.id});
+    res.status(200).json({status:'DEMO',id:message.id});
 }
 
 // Shot
