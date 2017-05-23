@@ -130,6 +130,19 @@ function shot(req,res,next){
 // Shot
 app.post('/shot',shot);
 
+// Send json message via UDP
+function sendMessage(req,res,next){
+    var message = req.body,
+        messageStr = JSON.stringify(message),
+        ip = '255.255.255.255';
+    client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
+    console.log('sending message ! port :',UDP_PORT,'ip',ip);
+    console.log(messageStr);
+    res.status(200).json({status:'DEMO',id:message.id});
+}
+app.post('/message',sendMessage);
+
+
 // Steps
 app.use('/step-:step', function (req, res, next) {
     var step = parseInt(req.params.step),
@@ -197,6 +210,12 @@ app.use('/step-:step', function (req, res, next) {
     res.render('step', options);
 });
 
+// Debug
+function Debug(req, res, next) {
+    console.log('Debug.');
+    console.log(req.body);
+    res.render('debug', _(config).extend({layout: 'main',title:config.name}));
+}
 // Home
 function Home(req, res, next) {
     console.log('Home.');
@@ -205,6 +224,8 @@ function Home(req, res, next) {
 }
 app.get('/', Home);
 app.post('/', Home);
+
+app.get('/debug',Debug);
 
 // static public
 app.use(express.static('public'));

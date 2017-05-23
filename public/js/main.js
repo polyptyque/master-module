@@ -104,4 +104,26 @@ jQuery(document).ready(function($){
         //socket.emit('my other event', { my: 'data' });
     });
 
+    function sendMessage(message){
+        return $.ajax({
+            url:'/message',
+            method:'post',
+            dataType:'json',
+            data:message
+        })
+    }
+
+    $('#hostname').submit(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        var hostname = $('[name="hostname"]').val();
+        if(hostname){
+            sendMessage({
+                action:'update_master_configuration',
+                hostname:hostname
+            })
+        }
+    })
+
 });
