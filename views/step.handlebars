@@ -37,10 +37,12 @@
                     <button class="shoot-button btn btn-main btn-danger" id="shoot-button" type="button"><i class="glyphicon glyphicon-camera"></i></button>
                     <p>{{description}}</p>
                     <div class="preview">
-                        <div class="pv" id="pv-1-a"></div>
-                        <div class="pv" id="pv-1-b"></div>
-                        <div class="pv" id="pv-2-a"></div>
-                        <div class="pv" id="pv-2-b"></div>
+
+                        {{#for 1 9 1}}
+                            <div class="pv" id="pv-{{this}}-a"></div>
+                            <div class="pv" id="pv-{{this}}-b"></div>
+                        {{/for}}
+
                     </div>
                 {{/ifvalue}}
 

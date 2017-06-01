@@ -29,6 +29,12 @@ var hbs = exphbs.create({
                 //console.log('ifvalue NO',conditional,'==',options.hash.value);
                 return options.inverse(this);
             }
+        },
+        for:function(from, to, incr, block) {
+            var accum = '';
+            for(var i = from; i <= to; i += incr)
+                accum += block.fn(i);
+            return accum;
         }
     }
 });
@@ -89,6 +95,8 @@ function postImage(req, res) {
     form.parse(req, function (err, fields, files) {
         res.writeHead(200, {'content-type': 'text/plain'});
         res.write('received upload:\n\n');
+
+        if(!files) return console.log('Upload error',modId);
 
         var a = files.a[0], b = files.b[0];
         function Copy(from){
