@@ -30,7 +30,7 @@ Les étapes du formulaires sont représentées par le tableau `steps`. Les quest
 
 ## templates html
 
-Les templates html du formulaire utilise [handlebars](http://handlebarsjs.com/)
+Les templates html du formulaire utilisent [handlebars](http://handlebarsjs.com/)
 et sont localisés dans le dossier `views` et ses sous-dossiers.
 
 Par exemple le layout principal est dans `views/layouts/main`

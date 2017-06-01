@@ -11,7 +11,7 @@ jQuery(document).ready(function($){
     $('.reset').click(function(e){
         e.preventDefault();
         e.stopPropagation();
-        if(confirm('Voulez-vous redémarrer à zéro ?')){
+        if(confirm('Vos données seront perdues et vous retournerez à la page d\'accueil du projet.')){
             window.location.href=$(this).attr('href');
         }
     });
