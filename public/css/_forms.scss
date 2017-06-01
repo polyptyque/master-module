@@ -1,0 +1,52 @@
+
+.red-button{
+ 	padding: 10px 40px; 
+ 	background: $red;
+ 	border-radius: 25px;
+ 	margin-top: 50px;
+}
+
+.h1{
+	text-align:center;
+	font-size:1.60rem;
+	margin-top: 80px;
+	margin-bottom: 40px;
+	color:$red;
+}
+
+.form-group{
+	text-align:center;
+	padding: 10px 0px;
+}
+
+.form-control{
+ 	border-radius: 25px;
+ 	background:none;
+ 	border-color:$red;
+}
+
+.choice{
+	background:$white;
+	border-radius: 25px;
+ 	margin-top: 20px;
+	width:80%;
+ 	padding: 10px 0px; 
+	text-transform:uppercase;
+	.input-hidden:checked + & {
+		background:$red;
+		color:$white;
+	}
+}
+
+.input-hidden{
+	display:none;
+}
+
+.reset{
+	color:$grey;
+}
+
+.horizontal-line{
+	border-top: 1px solid $grey;
+	width:90%;
+}

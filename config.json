@@ -9,27 +9,82 @@
       "fields":[
         {
           "id":"firstname",
-          "label":"Prénom",
-          "type":"text"
+          "type":"text",
+          "placeholder":"Prénom"
         },
         {
           "id":"lastname",
-          "label":"Nom",
-          "type":"text"
+          "type":"text",
+          "placeholder":"Nom"
+
         },
         {
           "id":"email",
-          "label":"Mail",
-          "type":"text"
+          "type":"text",
+          "placeholder":"Adresse email"
+
+        }
+      ]
+    },
+     {
+      "topic":"Quelle proposition vous définie le mieux ?",
+      "fields":[
+        {
+          "id":"temper",
+          "type":"radio",
+          "choices":[
+            {
+              "value":"funny",
+              "label":"Drôle"
+            },
+            {
+              "value":"nice",
+              "label":"Gentil(le)"
+            },
+            {
+              "value":"smart",
+              "label":"Intelligent(e)"
+            },
+            {
+              "value":"helpful",
+              "label":"Serviable"
+            }
+          ]
         }
       ]
     },
     {
-      "topic":"Intérêt",
+      "topic":"Quelle est votre plus grande qualité ?",
+      "fields":[
+        {
+          "id":"quality",
+          "type":"radio",
+          "choices":[
+            {
+              "value":"mytho",
+              "label":"Mythomane"
+            },
+            {
+              "value":"bad",
+              "label":"Méchant(e)"
+            },
+            {
+              "value":"rude",
+              "label":"Malpoli(e)"
+            },
+            {
+              "value":"vulgar",
+              "label":"Vulgaire"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic":"Quelle est votre occupation préférée ?",
       "fields":[
         {
           "id":"hobby",
-          "label":"Quelle est votre occupation préférée ?",
           "type":"radio",
           "choices":[
             {
@@ -41,34 +96,38 @@
               "label":"Manger"
             },
             {
-              "value": "music",
-              "label": "Écouter de la musique"
+              "value":"music",
+              "label":"Écouter de la musique"
             },
             {
-              "value":"sleeping",
+              "value":"sleep",
               "label":"Dormir"
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "topic":"Vous préférez ?",
+      "fields":[
         {
-          "id":"preference",
-          "label":"Vous préférez ?",
+          "id":"prefer",
           "type":"radio",
           "choices":[
             {
-              "value":"jumpthewindow",
+              "value":"jump",
               "label":"Sauter par le fenêtre"
             },
             {
-              "value":"eatyourfeces",
+              "value":"poo",
               "label":"Manger vos excréments"
             },
             {
-              "value": "runnakedonthestreet",
-              "label": "Courir tout nu dans la rue"
+              "value":"naked",
+              "label":"Courir tout nu dans la rue"
             },
             {
-              "value":"burnyourfingers",
+              "value":"burn",
               "label":"Vous bruler les doigts"
             }
           ]
@@ -76,11 +135,10 @@
       ]
     },
     {
-      "topic":"Projection",
+      "topic":"Quel serait le métier de vos rêves ?",
       "fields":[
         {
           "id":"job",
-          "label":"Quel serait le métier de vos rêves ?",
           "type":"radio",
           "choices":[
             {
@@ -100,10 +158,14 @@
               "label":"Styliste"
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "topic":"Que feriez-vous pour de l’argent ?",
+      "fields":[
         {
           "id":"money",
-          "label":"Que feriez-vous pour de l’argent ?",
           "type":"radio",
           "choices":[
             {
@@ -119,7 +181,7 @@
               "label":"Vendre de la drogue"
             },
             {
-              "value":"cutlittlefinger",
+              "value":"cut",
               "label":"Vous couper le petit doigt de pied sans anesthésie"
             }
           ]
@@ -127,11 +189,10 @@
       ]
     },
     {
-      "topic":"Connaissance",
+      "topic":"Qui était Monsieur Lenain de Tillemont ?",
       "fields":[
         {
           "id":"lenaintillemon",
-          "label":"Qui était Monsieur Lenain de Tillemont ?",
           "type":"radio",
           "choices":[
             {
@@ -151,10 +212,14 @@
               "label":"Un philosophe"
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "topic":"Que veut dire l’expression « être un narvalo » ?",
+      "fields":[
         {
-          "id":"narvalo",
-          "label":"Que veut dire l’expression « être un narvalo » ?",
+          "id":"lenaintillemon",
           "type":"radio",
           "choices":[
             {
@@ -176,7 +241,8 @@
           ]
         }
       ]
-    },{
+    },
+    {
       "topic":"Prise de vue",
       "fields":[
         {

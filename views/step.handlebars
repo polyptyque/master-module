@@ -1,8 +1,9 @@
 <div class="container step-{{step}}">
     <form id="step-form" action="{{nextStepAction}}" method="post">
         <h1 class="h1">{{topic}}
-            <small>{{stepNumber}}/{{totalStep}}</small>
+            <!-- <small>{{stepNumber}}/{{totalStep}}</small> -->
         </h1>
+        <hr class="horizontal-line">
         <!-- responses -->
         {{#each responses}}
                <input type="hidden" name="{{@key}}" value="{{this}}">
@@ -25,8 +26,8 @@
 
                 {{#ifvalue type value="radio"}}
                     {{#each choices}}
+                            <input class="input-hidden" id="field-{{id}}-{{index}}" name="{{id}}" value="{{value}}" type="radio" {{checked}} />
                             <label class="choice" for="field-{{id}}-{{index}}">
-                                <input id="field-{{id}}-{{index}}" name="{{id}}" value="{{value}}" type="radio" {{checked}} />
                                 {{label}}
                             </label>
                     {{/each}}
@@ -46,18 +47,18 @@
             </fieldset>
 
         {{/each}}
-        <hr />
+        <!-- <hr /> -->
 
         <div class="form-group clearfix">
         {{#if prevStep}}
-            <button id="btn-back" data-action="{{prevStepAction}}" type="submit" class="btn btn-default pull-left">étape précédente</button>
+            <button id="btn-back" data-action="{{prevStepAction}}" type="submit" class="btn red-button pull-left">étape précédente</button>
         {{/if}}
         {{#if nextStep}}
-            <input class="btn btn-default pull-right" type="submit" value="étape suivante" >
+            <input class="btn red-button pull-right" type="submit" value="étape suivante" >
         {{/if}}
         </div>
     </form>
 
-    <hr />
+    <!-- <hr /> -->
     <a class="reset" href="/">Recommencer depuis le début.</a>
 </div>

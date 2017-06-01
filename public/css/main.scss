@@ -1,7 +1,8 @@
 //
 @import "variables";
-@import "home";
 @import "layout";
+@import "forms";
+@import "home";
 //
 
 label.field-camera-shooter{
@@ -10,7 +11,7 @@ label.field-camera-shooter{
 
 .shoot-button{
   display: block;
-  float: left;
+  float: center;
   clear: both;
   padding: 40px;
   font-size:3em;
