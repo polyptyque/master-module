@@ -3,6 +3,8 @@ jQuery(document).ready(function($){
     var stepForm = $('#step-form'),
         shotId;
 
+    $('input[type=range]').slider();
+
     $('#btn-back').click(function(e){
         var action = $(this).data('action');
         stepForm.attr('action',action);
@@ -124,6 +126,46 @@ jQuery(document).ready(function($){
                 hostname:hostname
             })
         }
+    });
+
+    var config_xhr = false;
+    $('.config-button').click(function(){
+        var action = $(this).data('action'),
+            options = {
+                url:'/config',
+                method:'post',
+                headers:{
+                    'x-action':action,
+                    'x-from':'debug'
+                }
+            };
+        if(action == 'set_camera_options'){
+            var data = {};
+            $("#slave-module-configuration").serializeArray().map(function(x){data[x.name] = x.value;});
+            options.data = data;
+        }
+        config_xhr = $.ajax(options).done(function(datas){
+            console.log(datas)
+            config_xhr = false;
+            _(datas).each(function(value,key){
+               $('[name='+key+']').val(value);
+               $('[type=range][name='+key+']').slider('setValue',value);
+            });
+        }).fail(function(e){
+            config_xhr = false;
+            console.log(e)
+        })
     })
+
+    function AutoSave(){
+        if($('[name=auto-save]').is(':checked')){
+            if(!config_xhr){
+                $('.config-button[data-action=set_camera_options]').click();
+            }else{
+                setTimeout(AutoSave,1000);
+            }
+        }
+    }
+    $('#slave-module-configuration').find('input, select').change(AutoSave);
 
 });

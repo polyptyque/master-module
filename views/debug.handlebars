@@ -1,8 +1,60 @@
 <div class="container debug">
     <h1 class="h1">Debug</h1>
     <form id="hostname">
-        <label for="hostname">hostname</label>
-        <input type="text" name="hostname" placeholder="hostname">
-        <input type="submit">
+        <div class="form-group form-inline">
+            <label for="hostname">hostname</label>
+            <input type="text" name="hostname" placeholder="hostname" class="form-control">
+            <input type="submit" class="btn btn-default">
+        </div>
+
     </form>
+
+    <form id="slave-module-configuration" class="container-fluid">
+        <div class="row">
+        <h3 class="h3">Configurations des caméras</h3>
+
+        <button type="button" data-action="get_camera_options" class="btn btn-default config-button">Syncroniser</button>
+        <button type="button" data-action="set_camera_options" class="btn btn-default config-button">Sauvegarder</button>
+
+                <div class="form-inline">
+                    <label for="auto-save">Sauvegarde automatique</label>
+                    <input name="auto-save" type="checkbox" class="form-check-input" />
+                </div>
+
+
+        <fieldset class="">
+
+            {{#each cameraFields}}
+
+            <div class="form-group col-md-4">
+                <div class="container-fluid">
+                    <label for="{{id}}">{{label}}</label>
+                    {{#if options}}
+                        <select class="form-control" name="{{id}}">
+                            {{#each options}}
+                                <option value="{{this}}" label="{{this}}"></option>
+                            {{/each}}
+                        </select>
+                    {{else}}
+                        <div class="form-control">
+                            <input class="slider" type="range" name="{{id}}" min="{{min}}" max="{{max}}" step="{{step}}" data-slider-min="{{min}}" data-slider-max="{{max}}" data-slider-step="{{step}}" data-slider-tooltip="always" data-slider-tooltip-position="bottom" />
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+
+            {{/each}}
+
+        </fieldset>
+        </div>
+    </form>
+
+    <div class="previews">
+        {{#for 0 9 1}}
+            <div class="cam">
+                <h3 class="h3">slave-module-{{this}}</h3>
+            </div>
+        {{/for}}
+    </div>
+
 </div>

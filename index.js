@@ -45,6 +45,7 @@ app.enable('view cache');
 
 const HTTP_PORT=config.HTTP_PORT;
 const UDP_PORT=config.UDP_PORT;
+const UDP_ALL_IP = '255.255.255.255';
 
 var cacheDir = 'cache/';
 if (!fs.existsSync(cacheDir)){
@@ -128,28 +129,76 @@ app.post('/post',postImage);
 // Ask camera shot from web interface
 function shot(req,res,next){
     var message = {action:"shot",id:sha1(Math.random())},
-        messageStr = JSON.stringify(message),
-        ip = '255.255.255.255';
-    client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
-    console.log('sending shot ! port :',UDP_PORT,'ip',ip);
+        messageStr = JSON.stringify(message);
+    client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
+    console.log('sending shot ! port :',UDP_PORT,'ip',UDP_ALL_IP);
     res.status(200).json({status:'DEMO',id:message.id});
 }
 
 // Shot
 app.post('/shot',shot);
 
-// Send json message via UDP
+
+// Configuration global post entry
+function configAction(req,res,next){
+    var action = req.header('x-action'),
+        from = req.header('x-from');
+    if(action == 'get_camera_options'){
+        get_camera_options(from,req,res,next)
+    }
+    if(action == 'set_camera_options'){
+        set_camera_options(from,req,res,next)
+    }
+}
+
+var get_camera_options_timeout = false,
+    get_camera_options_res;
+function get_camera_options(from,req,res,next){
+    //
+    clearTimeout(get_camera_options_timeout);
+    if(from == 'debug'){
+        // requete debug
+        get_camera_options_timeout = setTimeout(function(){
+            res.status(408).json({'timeout':5000});
+        },5000);
+        get_camera_options_res = res;
+        sendJsonUPD({action:'get_camera_options'});
+    }else{
+        // retour module
+        if(get_camera_options_timeout){
+            get_camera_options_res.status(200).json(req.body);
+        }
+        get_camera_options_timeout = false;
+        res.status(200).end();
+    }
+}
+
+function set_camera_options(from,req,res,next){
+    sendJsonUPD({action:'set_camera_options',options:req.body});
+    res.json({status:'ok'});
+    console.log('set_camera_options');
+}
+
+// Config
+app.post('/config',configAction);
+
+// Send json message via UDP broadcast
 function sendMessage(req,res,next){
     var message = req.body,
-        messageStr = JSON.stringify(message),
-        ip = '255.255.255.255';
-    client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
-    console.log('sending message ! port :',UDP_PORT,'ip',ip);
+        messageStr = JSON.stringify(message);
+    client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
+    console.log('sending message ! port :',UDP_PORT,'ip',UDP_ALL_IP);
     console.log(messageStr);
     res.status(200).json({status:'DEMO',id:message.id});
 }
 app.post('/message',sendMessage);
 
+// Send raw json via UDP broadcast
+function sendJsonUPD(data){
+    var dataStr = JSON.stringify(data);
+    console.log('sendJsonUPD');
+    client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
+}
 
 // Steps
 app.use('/step-:step', function (req, res, next) {
@@ -221,8 +270,19 @@ app.use('/step-:step', function (req, res, next) {
 // Debug
 function Debug(req, res, next) {
     console.log('Debug.');
-    console.log(req.body);
-    res.render('debug', _(config).extend({layout: 'main',title:config.name}));
+    var cameraFields = [
+        {id:'iso',type:'select',label:'ISO',options:[100, 200, 320, 400, 500, 640, 800]},
+        {id:'shutter_speed',type:'range',label:'shutter speed',min:10,max:100000,step:10},
+        {id:'exposure_compensation',type:'range',label:'exposure compensation',min:-25,max:25,step:1},
+        {id:'brightness',type:'range',label:'brightness',min:0,max:100,step:1},
+        {id:'contrast',type:'range',label:'contrast',min:-100,max:100,step:1},
+        {id:'saturation',type:'range',label:'saturation',min:-100,max:100,step:1},
+        {id:'sharpness',type:'range',label:'sharpness',min:-100,max:100,step:1},
+        {id:'awb_gain_red',type:'range',label:'AWB gain red',min:0.5,max:3.5,step:0.01},
+        {id:'awb_gain_blue',type:'range',label:'AWB gain blue',min:0.5,max:3.5,step:0.01},
+        {id:'meter_mode',type:'select',label:'meter mode',options:['average', 'spot', 'backlit', 'matrix']},
+    ];
+    res.render('debug', _(config).extend({layout: 'main',title:config.name,cameraFields:cameraFields}));
 }
 // Home
 function Home(req, res, next) {
