@@ -99,7 +99,8 @@ function postImage(req, res) {
 
         if(!files) return console.log('Upload error',modId);
 
-        var a = files.a[0], b = files.b[0];
+        var a = files.a[0],
+            b = files.b ? files.b[0] : false;
         function Copy(from){
             var name = from.fieldName,
                 filePath = uploadDir+modId+'-'+name+'.jpg';
@@ -110,7 +111,7 @@ function postImage(req, res) {
                 if(err){
                     res.statusCode = '500';
                     res.end(err);
-                }else if(name == 'a'){
+                }else if(name == 'a' && b){
                     Copy(b);
                 }else{
                     console.log('Upload Done.');

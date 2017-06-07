@@ -403,7 +403,7 @@ iframe.demo {
 
 .pv {
   float: left;
-  width: 16.66667%;
+  width: 20%;
   background-color: #eee;
   background-size: contain;
   background-repeat: no-repeat;
@@ -413,9 +413,10 @@ iframe.demo {
     position: relative;
     content: ' ';
     display: block;
-    padding-top: 75%;
+    padding-top: 177.77778%;
     width: 100%; }
   .pv:after {
+    color: #e53428;
     position: absolute;
     content: attr(id);
     top: 0px;

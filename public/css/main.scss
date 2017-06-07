@@ -51,7 +51,7 @@ iframe.demo{
 }
 .pv{
   float:left;
-  width:percentage(1/6);
+  width:percentage(1/5);
   background-color: #eee;
   background-size: contain;
   background-repeat: no-repeat;
@@ -62,10 +62,11 @@ iframe.demo{
     position: relative;
     content: ' ';
     display: block;
-    padding-top: percentage(3/4);
+    padding-top: percentage(1920/1080);
     width: 100%;
   }
   &:after{
+    color:$red;
     position:absolute;
     content:attr(id);
     top:0px;
