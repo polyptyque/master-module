@@ -36,9 +36,17 @@
                             {{/each}}
                         </select>
                     {{else}}
-                        <div class="form-control">
-                            <input class="slider" type="range" name="{{id}}" min="{{min}}" max="{{max}}" step="{{step}}" data-slider-min="{{min}}" data-slider-max="{{max}}" data-slider-step="{{step}}" data-slider-tooltip="always" data-slider-tooltip-position="bottom" />
-                        </div>
+
+                        {{#ifequal type "number"}}
+                            <input class="form-control" type="number" name="{{id}}" min="{{min}}" max="{{max}}" step="{{step}}" data-slider-min="{{min}}" data-slider-max="{{max}}" data-slider-step="{{step}}" data-slider-tooltip="always" data-slider-tooltip-position="bottom" />
+                        {{/ifequal}}
+
+                        {{#ifequal type "range"}}
+                            <div class="form-control">
+                                <input class="slider" type="range" name="{{id}}" min="{{min}}" max="{{max}}" step="{{step}}" data-slider-min="{{min}}" data-slider-max="{{max}}" data-slider-step="{{step}}" data-slider-tooltip="always" data-slider-tooltip-position="bottom" />
+                            </div>
+                        {{/ifequal}}
+
                     {{/if}}
                 </div>
             </div>

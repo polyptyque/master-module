@@ -30,6 +30,15 @@ var hbs = exphbs.create({
                 return options.inverse(this);
             }
         },
+        ifequal:function(a,b,options){
+            if (a === b) {
+                //console.log('ifvalue YES',conditional,'==',options.hash.value);
+                return options.fn(this)
+            } else {
+                //console.log('ifvalue NO',conditional,'==',options.hash.value);
+                return options.inverse(this);
+            }
+        },
         for:function(from, to, incr, block) {
             var accum = '';
             for(var i = from; i <= to; i += incr)
@@ -272,8 +281,10 @@ app.use('/step-:step', function (req, res, next) {
 function Debug(req, res, next) {
     console.log('Debug.');
     var cameraFields = [
+        {id:'width',type:'number',label:'width'},
+        {id:'height',type:'number',label:'height'},
         {id:'iso',type:'select',label:'ISO',options:[100, 200, 320, 400, 500, 640, 800]},
-        {id:'shutter_speed',type:'range',label:'shutter speed',min:10,max:100000,step:10},
+        {id:'shutter_speed',type:'range',label:'shutter speed',min:10,max:1000000,step:10},
         {id:'exposure_compensation',type:'range',label:'exposure compensation',min:-25,max:25,step:1},
         {id:'brightness',type:'range',label:'brightness',min:0,max:100,step:1},
         {id:'contrast',type:'range',label:'contrast',min:-100,max:100,step:1},
