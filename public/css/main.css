@@ -424,4 +424,10 @@ iframe.demo {
     padding: 2px;
     font-size: 9px; }
 
+.slave-module {
+  background: #e53428;
+  color: #fff; }
+  .slave-module.ok {
+    background: #4cae4c; }
+
 /*# sourceMappingURL=main.css.map */

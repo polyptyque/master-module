@@ -51,6 +51,27 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.enable('view cache');
 
+var camera_mapping = [
+    '1-b',
+    '1-a',
+    '2-b',
+    '2-a',
+    '3-b',
+    '3-a',
+    '4-b',
+    '4-a',
+    '5-b',
+    '0-a',
+    '5-a',
+    '6-b',
+    '6-a',
+    '7-b',
+    '7-a',
+    '8-b',
+    '8-a',
+    '9-b',
+    '9-a',
+]
 
 const HTTP_PORT=config.HTTP_PORT;
 const UDP_PORT=config.UDP_PORT;
@@ -112,7 +133,9 @@ function postImage(req, res) {
             b = files.b ? files.b[0] : false;
         function Copy(from){
             var name = from.fieldName,
-                filePath = uploadDir+modId+'-'+name+'.jpg';
+                cam_abs_name = modId+'-'+name,
+                position = 1+_(camera_mapping).indexOf(cam_abs_name)
+            var filePath = uploadDir+position+'-'+cam_abs_name+'.jpg';
             console.log('Copy '+name+'.',filePath);
             fs.copy(from.path,filePath,{replace:true},function(err){
                 // envoie un message via socket.io
@@ -162,6 +185,9 @@ function configAction(req,res,next){
     if(action == 'restart_camera'){
         restart_camera(from,req,res,next)
     }
+    if(action == 'get_status'){
+        get_status(from,req,res,next);
+    }
 }
 
 var get_camera_options_timeout = false,
@@ -181,6 +207,7 @@ function get_camera_options(from,req,res,next){
         if(get_camera_options_timeout){
             get_camera_options_res.status(200).json(req.body);
         }
+        console.log('get_camera_options from',from)
         get_camera_options_timeout = false;
         res.status(200).end();
     }
@@ -196,6 +223,17 @@ function restart_camera(from,req,res,next){
     sendJsonUPD({action:'restart_camera'});
     res.json({status:'ok'});
     console.log('restart_camera');
+}
+
+function get_status(from,req,res,next){
+    if(from == 'debug')
+    {
+        sendJsonUPD({action:'get_status'});
+    }
+
+    io.emit('get_status', {from:from,status:'ok'});
+    res.json({status:'ok'});
+    console.log('get_status',from)
 }
 
 // Config

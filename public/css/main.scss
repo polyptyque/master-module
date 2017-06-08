@@ -75,3 +75,11 @@ iframe.demo{
     font-size:9px;
   }
 }
+
+.slave-module{
+  background: $red;
+  color:#fff;
+  &.ok{
+    background:#4cae4c;
+  }
+}

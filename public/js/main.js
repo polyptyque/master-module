@@ -144,6 +144,9 @@ jQuery(document).ready(function($){
             $("#slave-module-configuration").serializeArray().map(function(x){data[x.name] = x.value;});
             options.data = data;
         }
+        if(action == 'get_status'){
+            $('.slave-module').removeClass('ok ko');
+        }
         config_xhr = $.ajax(options).done(function(datas){
             console.log(datas)
             config_xhr = false;
@@ -155,7 +158,13 @@ jQuery(document).ready(function($){
             config_xhr = false;
             console.log(e)
         })
-    })
+    });
+
+    // status
+    socket.on('get_status', function(data){
+        console.log("get_status",data.from,'.'+data.from+' > .status')
+        $('.'+data.from).addClass('ok');
+    });
 
     function AutoSave(){
         if($('[name=auto-save]').is(':checked')){
