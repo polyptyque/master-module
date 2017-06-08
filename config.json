@@ -54,7 +54,7 @@
       ]
     },
     {
-      "topic":"Quelle est votre plus grande qualité ?",
+      "topic":"Quelle est votre plus grande défaut ?",
       "fields":[
         {
           "id":"quality",
@@ -169,20 +169,20 @@
           "type":"radio",
           "choices":[
             {
-              "value":"kill",
-              "label":"Tuer un membre de votre famille"
+              "value":"gofast",
+              "label":"Faire un Go Fast"
             },
             {
-              "value":"organ",
-              "label":"Donner un organe"
+              "value":"robbery",
+              "label":"Participer à un braquage"
             },
             {
               "value":"drugs",
               "label":"Vendre de la drogue"
             },
             {
-              "value":"cut",
-              "label":"Vous couper le petit doigt de pied sans anesthésie"
+              "value":"kidnapping",
+              "label":"Organiser un kidnapping"
             }
           ]
         }
@@ -196,8 +196,8 @@
           "type":"radio",
           "choices":[
             {
-              "value":"king",
-              "label":"Un roi"
+              "value":"writer",
+              "label":"Un écrivain"
             },
             {
               "value":"accordeonist",
@@ -208,8 +208,8 @@
               "label":"Un historien"
             },
             {
-              "value":"philosoph",
-              "label":"Un philosophe"
+              "value":"trader",
+              "label":"Un riche commerçant"
             }
           ]
         }
