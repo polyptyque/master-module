@@ -140,7 +140,7 @@ jQuery(document).ready(function($){
                 }
             };
         if(action == 'set_camera_options'){
-            var data = {};
+            var data = {auto:'off'};
             $("#slave-module-configuration").serializeArray().map(function(x){data[x.name] = x.value;});
             options.data = data;
         }
@@ -168,6 +168,6 @@ jQuery(document).ready(function($){
     }
     $('#slave-module-configuration').find('input, select').change(AutoSave);
     // Auto sync on startup page
-    $('.config-button[data-action=get_camera_options]').click();
+    //$('.config-button[data-action=get_camera_options]').click();
 
 });

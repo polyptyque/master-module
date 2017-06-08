@@ -159,6 +159,9 @@ function configAction(req,res,next){
     if(action == 'set_camera_options'){
         set_camera_options(from,req,res,next)
     }
+    if(action == 'restart_camera'){
+        restart_camera(from,req,res,next)
+    }
 }
 
 var get_camera_options_timeout = false,
@@ -187,6 +190,12 @@ function set_camera_options(from,req,res,next){
     sendJsonUPD({action:'set_camera_options',options:req.body});
     res.json({status:'ok'});
     console.log('set_camera_options');
+}
+
+function restart_camera(from,req,res,next){
+    sendJsonUPD({action:'restart_camera'});
+    res.json({status:'ok'});
+    console.log('restart_camera');
 }
 
 // Config
@@ -283,8 +292,9 @@ function Debug(req, res, next) {
     var cameraFields = [
         {id:'width',type:'number',label:'width'},
         {id:'height',type:'number',label:'height'},
+        {id:'jpeg_quality',type:'range',label:'jpeg quality',min:0,max:100,step:1},
         {id:'iso',type:'select',label:'ISO',options:[100, 200, 320, 400, 500, 640, 800]},
-        {id:'shutter_speed',type:'range',label:'shutter speed',min:10,max:1000000,step:10},
+        {id:'shutter_speed',type:'range',label:'shutter speed',min:10,max:10000000,step:10},
         {id:'exposure_compensation',type:'range',label:'exposure compensation',min:-25,max:25,step:1},
         {id:'brightness',type:'range',label:'brightness',min:0,max:100,step:1},
         {id:'contrast',type:'range',label:'contrast',min:-100,max:100,step:1},
@@ -293,6 +303,8 @@ function Debug(req, res, next) {
         {id:'awb_gain_red',type:'range',label:'AWB gain red',min:0.5,max:3.5,step:0.01},
         {id:'awb_gain_blue',type:'range',label:'AWB gain blue',min:0.5,max:3.5,step:0.01},
         {id:'meter_mode',type:'select',label:'meter mode',options:['average', 'spot', 'backlit', 'matrix']},
+        {id:'use_video_port',type:'select',label:'use video port',options:['on', 'off']},
+        {id:'auto',type:'select',label:'mode automatique',options:['on', 'off']},
     ];
     res.render('debug', _(config).extend({layout: 'main',title:config.name,cameraFields:cameraFields}));
 }

@@ -15,6 +15,7 @@
 
         <button type="button" data-action="get_camera_options" class="btn btn-default config-button">Synchroniser</button>
         <button type="button" data-action="set_camera_options" class="btn btn-default config-button">Sauvegarder</button>
+        <button type="button" data-action="restart_camera" class="btn btn-default config-button">Redémarrer la camera</button>
 
                 <div class="form-inline">
                     <label for="auto-save">Sauvegarde automatique</label>
@@ -36,6 +37,10 @@
                             {{/each}}
                         </select>
                     {{else}}
+
+                        {{#ifequal type "boolean"}}
+                            <input class="" type="checkbox" name="{{id}}" />
+                        {{/ifequal}}
 
                         {{#ifequal type "number"}}
                             <input class="form-control" type="number" name="{{id}}" min="{{min}}" max="{{max}}" step="{{step}}" data-slider-min="{{min}}" data-slider-max="{{max}}" data-slider-step="{{step}}" data-slider-tooltip="always" data-slider-tooltip-position="bottom" />
