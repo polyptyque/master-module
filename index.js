@@ -138,7 +138,7 @@ app.post('/post',postImage);
 
 // Ask camera shot from web interface
 function shot(req,res,next){
-    var message = {action:"shot",id:sha1(Math.random())},
+    var uid=(new Date()).getTime()+'_'+sha1(Math.random()),message = {action:"shot",id:uid},
         messageStr = JSON.stringify(message);
     client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
     console.log('sending shot ! port :',UDP_PORT,'ip',UDP_ALL_IP);
