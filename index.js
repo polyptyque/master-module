@@ -71,7 +71,11 @@ var camera_mapping = [
     '8-a',
     '9-b',
     '9-a',
-]
+],
+// shooting status
+shooting = false, shooting_start,
+shot_uid,
+cm_count = 1, cm_success = 0, cm_ips = [];
 
 const HTTP_PORT=config.HTTP_PORT;
 const UDP_PORT=config.UDP_PORT;
@@ -110,9 +114,25 @@ client.bind(function() {
 
 function postImage(req, res) {
     var headers = req.headers;
-    var shotId = headers['x-shot-id'],
+    var shotId = headers['x-shot-uid'],
         modId = headers['x-mod-id'],
+        action = headers['x-action'],
     uploadDir = cacheDir+shotId+'/';
+
+    if(action=='confirm_shot'){
+        var status = headers['x-status'], ip = req.ip.split(':').pop(),
+            message = 'confirm shot '+shotId+' : '+status+' ip '+ip+' modId '+modId;
+        if(status == 'ok'){
+            cm_success++;
+            cm_ips.push(ip);
+        }
+        res.end(message);
+        console.log(message);
+        if(cm_success == cm_count){
+            AllImagesShooted();
+        }
+        return;
+    }
 
     console.log('Images are posted...');
     console.log(headers);
@@ -148,6 +168,7 @@ function postImage(req, res) {
                 }else{
                     console.log('Upload Done.');
                     res.end(util.inspect({fields: fields, files: files}));
+                    DownloadShot();
                 }
             });
         }
@@ -159,13 +180,42 @@ function postImage(req, res) {
 // Post Image
 app.post('/post',postImage);
 
+function AllImagesShooted(){
+    // all images are shooted, start download from cm
+    console.log('All images are shooted !');
+    DownloadShot();
+}
+
+function DownloadShot(){
+    var ip = cm_ips.pop();
+    if(ip){
+        console.log('Download from cm',ip);
+        var message = {action:'send_images',uid:shot_uid},
+            messageStr = JSON.stringify(message);
+        client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
+        //DownloadShot();
+    }else{
+        var ellapsed_time = (new Date()).getTime() - shooting_start;
+        console.log('All images successfully downloaded in %s ms.',ellapsed_time);
+        shooting = false;
+    }
+}
+
 // Ask camera shot from web interface
 function shot(req,res,next){
-    var uid=(new Date()).getTime()+'_'+sha1(Math.random()),message = {action:"shot",id:uid},
-        messageStr = JSON.stringify(message);
-    client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
-    console.log('sending shot ! port :',UDP_PORT,'ip',UDP_ALL_IP);
-    res.status(200).json({status:'DEMO',id:message.id});
+    if(!shooting) {
+        shooting = true;
+        shooting_start = (new Date()).getTime();
+        cm_ips = [],
+        cm_success = 0; // reset the Compute Module success count
+        var uid = shot_uid = (new Date()).getTime() + '_' + sha1(Math.random()), message = {action: "shot", uid: uid},
+            messageStr = JSON.stringify(message);
+        client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
+        console.log('sending shot ! port :', UDP_PORT, 'ip', UDP_ALL_IP);
+        res.status(200).json({status: 'ok', uid: message.uid});
+    }else{
+        res.status(200).json({status: 'fail'});
+    }
 }
 
 // Shot
@@ -246,7 +296,7 @@ function sendMessage(req,res,next){
     client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
     console.log('sending message ! port :',UDP_PORT,'ip',UDP_ALL_IP);
     console.log(messageStr);
-    res.status(200).json({status:'DEMO',id:message.id});
+    res.status(200).json({status:'ok',uid:message.uid});
 }
 app.post('/message',sendMessage);
 

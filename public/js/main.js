@@ -57,11 +57,11 @@ jQuery(document).ready(function($){
                         data:data
                     }
                 ).done(function(data,status){
-                    console.log(status,data,data.id);
-                    shotId = data.id;
                     setTimeout(function(){
                         ResetButton();
                     },1000);
+                    if(data.status == 'fail') alert('Les appareils photos semblent déjà occupés...');
+
                 }).fail(function(res,type,status){
                     console.log(arguments);
                     var data = res.responseJSON || {status:status};
