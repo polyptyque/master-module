@@ -38,4 +38,5 @@ jspm_packages
 
 # Project
 cache/
+cache-archives*/
 .sass-cache/

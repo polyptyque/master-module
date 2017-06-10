@@ -16,6 +16,8 @@ var _ = require('underscore');
 var fs = require('fs.extra');
 var multiparty = require('multiparty');
 var util = require('util');
+var request = require('request');
+var targz = require('tar.gz');
 //
 // express handlerbars template
 var exphbs  = require('express-handlebars');
@@ -114,14 +116,14 @@ client.bind(function() {
 
 function postImage(req, res) {
     var headers = req.headers;
-    var shotId = headers['x-shot-uid'],
+    var shotUid = headers['x-shot-uid'],
         modId = headers['x-mod-id'],
         action = headers['x-action'],
-    uploadDir = cacheDir+shotId+'/';
+    uploadDir = cacheDir+shotUid+'/';
 
     if(action=='confirm_shot'){
         var status = headers['x-status'], ip = req.ip.split(':').pop(),
-            message = 'confirm shot '+shotId+' : '+status+' ip '+ip+' modId '+modId;
+            message = 'confirm shot '+shotUid+' : '+status+' ip '+ip+' modId '+modId;
         if(status == 'ok'){
             cm_success++;
             cm_ips.push(ip);
@@ -135,7 +137,7 @@ function postImage(req, res) {
     }
 
     console.log('Images are posted...');
-    console.log(headers);
+    //console.log(headers);
 
     if (!fs.existsSync(uploadDir)){
         fs.mkdirSync(uploadDir);
@@ -156,17 +158,17 @@ function postImage(req, res) {
                 cam_abs_name = modId+'-'+name,
                 position = 1+_(camera_mapping).indexOf(cam_abs_name)
             var filePath = uploadDir+position+'-'+cam_abs_name+'.jpg';
-            console.log('Copy '+name+'.',filePath);
+            //console.log('Copy '+name+'.',filePath);
             fs.copy(from.path,filePath,{replace:true},function(err){
                 // envoie un message via socket.io
-                io.emit('postImage', {filePath:filePath,shotId:shotId,modId:modId,name:name});
+                io.emit('postImage', {filePath:filePath,shotUid:shotUid,modId:modId,name:name});
                 if(err){
                     res.statusCode = '500';
                     res.end(err);
                 }else if(name == 'a' && b){
                     Copy(b);
                 }else{
-                    console.log('Upload Done.');
+                    console.log('compute module',modId,'upload Done.');
                     res.end(util.inspect({fields: fields, files: files}));
                     DownloadShot();
                 }
@@ -195,10 +197,42 @@ function DownloadShot(){
         client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
         //DownloadShot();
     }else{
-        var ellapsed_time = (new Date()).getTime() - shooting_start;
-        console.log('All images successfully downloaded in %s ms.',ellapsed_time);
+        // Toutes les images ont été téléchargées.
         shooting = false;
+        ArchiveShot();
     }
+}
+
+function ArchiveShot(){
+    //
+    // Archive shot and send to web server
+    //
+    var shotDirPath = cacheDir+shot_uid,
+        shotArchivePath = shotDirPath+'.tar.gz';
+    //
+    var read = targz().createReadStream(shotDirPath);
+    var write = fs.createWriteStream(shotArchivePath);
+
+    function UploadToWebServer(){
+        console.log('UploadToWebServer');
+        var r = request.post('http://polyptyque.photo/upload', function optionalCallback (err, httpResponse, body) {
+            if (err) {
+                return console.error('upload failed:', err);
+            }
+            console.log('Upload successful!  Server responded with:', body);
+        });
+        var form = r.form();
+        form.append('meta',JSON.stringify({uid:shot_uid}));
+        form.append('form',JSON.stringify({uid:shot_uid}));
+        form.append('archive', fs.createReadStream(shotArchivePath));
+    }
+    //
+    read.pipe(write)
+        .on('finish',function(){
+            var ellapsed_time = (new Date()).getTime() - shooting_start;
+            console.log('All images successfully downloaded & archived in %s ms.',ellapsed_time);
+            UploadToWebServer();
+        });
 }
 
 // Ask camera shot from web interface

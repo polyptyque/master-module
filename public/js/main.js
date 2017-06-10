@@ -1,7 +1,7 @@
 jQuery(document).ready(function($){
 
     var stepForm = $('#step-form'),
-        shotId;
+        shotUid;
 
     $('input[type=range]').slider();
 
@@ -99,8 +99,8 @@ jQuery(document).ready(function($){
 
     var socket = io.connect('http://localhost:8080');
     socket.on('postImage', function (data) {
-        console.log(data,shotId);
-        if(data.shotId == shotId){
+        console.log(data,shotUid);
+        if(data.shotUid == shotUid){
             $('#pv-'+data.modId+'-'+data.name).removeClass('loading').css({backgroundImage:'url('+data.filePath+')'})
         }
         //socket.emit('my other event', { my: 'data' });
