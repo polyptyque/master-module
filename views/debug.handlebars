@@ -4,7 +4,7 @@
         <div class="form-group form-inline">
             <label for="hostname">hostname</label>
             <input type="text" name="hostname" placeholder="hostname" class="form-control">
-            <input type="text" name="port" placeholder="port" class="form-control">
+            <input type="text" name="port" placeholder="port" class="form-control small-input">
             <input type="submit" class="btn btn-default">
         </div>
 
@@ -25,6 +25,9 @@
                     <label for="auto-save">Sauvegarde automatique</label>
                     <input name="auto-save" type="checkbox" class="form-check-input" />
                 </div>
+        <div id="logger" class="logger">
+
+        </div>
 
         <fieldset class="previews">
             {{#for 0 9 1}}

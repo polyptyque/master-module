@@ -21,6 +21,8 @@
 	display: block;
 }
 
+
+
 .form-group{
 	text-align:center;
 	padding: 10px 0px;
@@ -30,6 +32,9 @@
  	border-radius: 25px;
  	background:none;
  	border-color:$red;
+	&.small-input{
+		width:80px;
+	}
 }
 
 .choice{

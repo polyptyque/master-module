@@ -100,7 +100,7 @@ jQuery(document).ready(function($){
         }
     });
 
-    var socket = io.connect('http://localhost:8080');
+    var socket = io.connect('http://'+location.hostname+':'+HTTP_PORT_ALT);
     socket.on('postImage', function (data) {
         console.log(data,shotUid);
         if(data.shotUid == shotUid){
@@ -169,6 +169,14 @@ jQuery(document).ready(function($){
     socket.on('get_status', function(data){
         console.log("get_status",data.from,'.'+data.from+' > .status')
         $('.'+data.from).addClass('ok');
+    });
+    // status
+    var logger = $('#logger');
+    socket.on('logger', function(data){
+        console.log("logger",data);
+        logger.append("<div class='level-"+data.level+"'>"+data.message+"</div>");
+        logger.scrollTop(logger[0].scrollHeight);
+        //$('.'+data.from).addClass('ok');
     });
 
     function AutoSave(){

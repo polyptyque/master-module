@@ -333,6 +333,8 @@ p {
   border-radius: 25px;
   background: none;
   border-color: #e53428; }
+  .form-control.small-input {
+    width: 80px; }
 
 .choice {
   background: #FFFFFF;
@@ -429,5 +431,23 @@ iframe.demo {
   color: #fff; }
   .slave-module.ok {
     background: #4cae4c; }
+
+.logger {
+  background: #003;
+  color: #fd9;
+  font-size: 12px;
+  font-family: "Monaco", "Courier New", Courier, monospace;
+  height: 8em;
+  overflow: scroll;
+  padding: .5em;
+  margin: .5em 0; }
+  .logger .level-0 {
+    color: #e53428; }
+  .logger .level-1 {
+    color: #fff0c3; }
+  .logger .level-2 {
+    color: #646464; }
+  .logger .level-3 {
+    color: rgba(255, 240, 195, 0.5); }
 
 /*# sourceMappingURL=main.css.map */

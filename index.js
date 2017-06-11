@@ -23,6 +23,10 @@ var targz = require('tar.gz');
 //
 // express handlerbars template
 var exphbs  = require('express-handlebars');
+var LOG_LEVEL_ERROR = 0,
+    LOG_LEVEL_WARNING = 1,
+    LOG_LEVEL_DEBUG = 2,
+    LOG_LEVEL_VERBOSE = 3;
 var hbs = exphbs.create({
     helpers:{
         ifvalue:function (conditional, options) {
@@ -55,6 +59,12 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.enable('view cache');
 
+function logger(message,logLevel){
+    console.log(message);
+    if(!(logLevel>0)) logLevel = LOG_LEVEL_VERBOSE;
+    io.emit('logger',{message:message,level:logLevel});
+}
+
 var camera_mapping = [
     '1-b',
     '1-a',
@@ -83,6 +93,7 @@ shot_uid, shooting_responses,
 cm_count = 10, cm_success = 0, cm_downloaded = 0, cm_ips = [];
 
 const HTTP_PORT=config.HTTP_PORT;
+const HTTP_PORT_ALT=config.HTTP_PORT_ALT;
 const UDP_PORT=config.UDP_PORT;
 const UDP_ALL_IP = '255.255.255.255';
 
@@ -98,7 +109,9 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 
-io.on('connection', function(socket){});
+io.on('connection', function(socket){
+    logger('new socket')
+});
 
 // UDP Client
 const dgram = require('dgram');
@@ -109,7 +122,7 @@ var client = dgram.createSocket(
     }
 );
 client.bind(function() {
-    console.log('client UDP setBroadcast');
+    logger('client UDP setBroadcast');
     client.setBroadcast(true);
 });
 
@@ -128,14 +141,14 @@ function postImage(req, res) {
             cm_ips.push(ip);
         }
         res.end(message);
-        console.log(message);
+        logger(message);
         if(cm_success == cm_count){
             AllImagesShooted();
         }
         return;
     }
 
-    console.log('Images are posted...',modId);
+    logger('Images are posted...',modId);
     //console.log(headers);
 
     if (!fs.existsSync(uploadDir)){
@@ -148,7 +161,7 @@ function postImage(req, res) {
         res.writeHead(200, {'content-type': 'text/plain'});
         res.write('received upload from '+modId+':\n\n');
 
-        if(!files) return console.log('Upload error',modId);
+        if(!files) return logger('Upload error '+modId);
 
         var a = files.a[0],
             b = files.b ? files.b[0] : false;
@@ -168,7 +181,7 @@ function postImage(req, res) {
                     Copy(b);
                 }else{
                     cm_downloaded ++;
-                    console.log('compute module',modId,'upload Done.');
+                    logger('compute module '+modId+' upload Done.');
                     res.end(util.inspect({fields: fields, files: files}));
                     //
                     if(cm_downloaded == cm_count){
@@ -189,12 +202,12 @@ app.post('/post',postImage);
 
 function AllImagesShooted(){
     // all images are shooted, start download from cm
-    console.log('All images are shooted !');
+    logger('All images are shooted !');
     if(shooting_timeout){
         clearTimeout(shooting_timeout);
         DownloadShot();
     }else{
-        console.log('but timeout..., sorry');
+        logger('but timeout..., sorry');
     }
 }
 
@@ -219,18 +232,18 @@ function ArchiveShot(){
         if(err) return console.log(err);
 
         var ellapsed_time = (new Date()).getTime() - shooting_start;
-        console.log('All images successfully downloaded & archived in %s ms.',ellapsed_time);
+        logger('All images successfully downloaded & archived in %s ms.',ellapsed_time);
 
         var req = request.post('http://polyptyque.photo/upload', function (err, res, body) {
             if (err) {
                 return console.error('Upload failed:', err);
             }
             var ellapsed_time = (new Date()).getTime() - shooting_start;
-            console.log('Upload successful! ellapsed time %s sec',Math.round(ellapsed_time/1000));
-            console.log('Upload successful!  Server responded with:', body);
+            logger('Upload successful! ellapsed time %s sec',Math.round(ellapsed_time/1000));
+            logger('Upload successful!  Server responded with:'+ body);
         });
         progress(req).on('progress',function(state){
-            console.log('%s% speed : %s',state.percent,state.speed/1024)
+            logger('%s% speed : %s',state.percent,state.speed/1024)
         });
         var form = req.form(),
             form_response = {};
@@ -255,9 +268,9 @@ function shot(req,res,next){
         var uid = shot_uid = (new Date()).getTime() + '_' + sha1(Math.random()), message = {action: "shot", uid: uid},
             messageStr = JSON.stringify(message);
         client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
-        console.log('sending shot ! port :', UDP_PORT, 'ip', UDP_ALL_IP);
+        logger('sending shot ! port : '+ UDP_ALL_IP + ':'+ UDP_PORT);
         shooting_timeout = setTimeout(function(){
-            console.log('shooting timeout %s ms for %s', config.shooting_timout, uid);
+            logger('shooting timeout %s ms for %s', config.shooting_timout, uid);
             shooting_timeout = shooting = false;
             sendJsonUPD({action:'reset_shooting'});
             res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
@@ -289,7 +302,7 @@ function configAction(req,res,next){
 function DefaultConfigAction(action,req,res){
     sendJsonUPD({action:action});
     res.json({status:'ok',action:action});
-    console.log('config action : ',action);
+    logger('config action : '+action);
 }
 
 var get_camera_options_timeout = false,
@@ -309,7 +322,7 @@ function get_camera_options(from,req,res,next){
         if(get_camera_options_timeout){
             get_camera_options_res.status(200).json(req.body);
         }
-        console.log('get_camera_options from',from)
+        logger('get_camera_options from '+from)
         get_camera_options_timeout = false;
         res.status(200).end();
     }
@@ -318,7 +331,7 @@ function get_camera_options(from,req,res,next){
 function set_camera_options(from,req,res,next){
     sendJsonUPD({action:'set_camera_options',options:req.body});
     res.json({status:'ok'});
-    console.log('set_camera_options');
+    logger('set_camera_options');
 }
 
 function get_status(from,req,res,next){
@@ -329,7 +342,7 @@ function get_status(from,req,res,next){
 
     io.emit('get_status', {from:from,status:'ok'});
     res.json({status:'ok'});
-    console.log('get_status',from)
+    logger('get_status '+from)
 }
 
 // Config
@@ -340,8 +353,8 @@ function sendMessage(req,res,next){
     var message = req.body,
         messageStr = JSON.stringify(message);
     client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
-    console.log('sending message ! port :',UDP_PORT,'ip',UDP_ALL_IP);
-    console.log(messageStr);
+    logger('sending message ! port : '+UDP_ALL_IP+':'+UDP_PORT);
+    logger(messageStr);
     res.status(200).json({status:'ok',uid:message.uid});
 }
 app.post('/message',sendMessage);
@@ -349,11 +362,6 @@ app.post('/message',sendMessage);
 // Send raw json via UDP broadcast
 function sendJsonUPD(data){
     var dataStr = JSON.stringify(data);
-    console.log('sendJsonUPD');
-    /*_(config['slave-modules']).each(function(slaveModuleHost){
-        console.log('send to',slaveModuleHost);
-        client.send(dataStr, 0, dataStr.length, UDP_PORT, slaveModuleHost);
-    });*/
     client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
 }
 
@@ -461,8 +469,8 @@ app.get('/debug',Debug);
 app.use(express.static('public'));
 app.use('/cache',express.static('cache'));
 
-http.listen(HTTP_PORT, function(){
-    console.log('listening on *:' + HTTP_PORT);
+http.listen(HTTP_PORT_ALT, function(){
+    logger('listening on *:' + HTTP_PORT_ALT);
     // 404
     app.use(function(req, res, next) {
         res.status(404).end('404 not found \n'+req.url);
