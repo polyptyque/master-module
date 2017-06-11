@@ -257,7 +257,7 @@ function shot(req,res,next){
         client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
         console.log('sending shot ! port :', UDP_PORT, 'ip', UDP_ALL_IP);
         shooting_timeout = setTimeout(function(){
-            console.log('shooting timeout %s ms for %s', shooting_timout, uid);
+            console.log('shooting timeout %s ms for %s', config.shooting_timout, uid);
             shooting_timeout = shooting = false;
             sendJsonUPD({action:'reset_shooting'});
             res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
