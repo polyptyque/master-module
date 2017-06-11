@@ -77,6 +77,7 @@ var camera_mapping = [
 ],
 // shooting status
 shooting = false, shooting_start,
+shooting_timeout = false,
 shot_uid, shooting_responses,
 cm_count = 10, cm_success = 0, cm_ips = [];
 
@@ -182,7 +183,12 @@ app.post('/post',postImage);
 function AllImagesShooted(){
     // all images are shooted, start download from cm
     console.log('All images are shooted !');
-    DownloadShot();
+    if(shooting_timeout){
+        clearTimeout(shooting_timeout);
+        DownloadShot();
+    }else{
+        console.log('but timeout..., sorry');
+    }
 }
 
 function DownloadShot(){
@@ -244,7 +250,11 @@ function shot(req,res,next){
             messageStr = JSON.stringify(message);
         client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
         console.log('sending shot ! port :', UDP_PORT, 'ip', UDP_ALL_IP);
-        res.status(200).json({status: 'ok', uid: message.uid});
+        shooting_timeout = setTimeout(function(){
+            console.log('shooting fail', uid);
+            shooting_timeout = shooting = false;
+            res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
+        },2000);
     }else{
         res.status(200).json({status: 'fail'});
     }
