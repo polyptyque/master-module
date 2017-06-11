@@ -257,13 +257,13 @@ function shot(req,res,next){
         client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
         console.log('sending shot ! port :', UDP_PORT, 'ip', UDP_ALL_IP);
         shooting_timeout = setTimeout(function(){
-            console.log('shooting fail', uid);
+            console.log('shooting timeout', uid);
             shooting_timeout = shooting = false;
             sendJsonUPD({action:'reset_shooting'});
             res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
-        },2000);
+        },5000);
     }else{
-        res.status(200).json({status: 'fail'});
+        res.status(200).json({status: 'fail', error:'buzzy'});
     }
 }
 

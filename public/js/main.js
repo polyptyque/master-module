@@ -63,7 +63,7 @@ jQuery(document).ready(function($){
                         ResetButton();
                     },1000);
                     if(data.uid) shotUid = data.uid;
-                    if(data.status == 'fail') alert('Les appareils photos semblent déjà occupés...');
+                    if(data.status == 'fail') alert('Les appareils photos semblent déjà occupés... '+data.error);
 
                 }).fail(function(res,type,status){
                     console.log(arguments);
