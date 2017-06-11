@@ -3,6 +3,7 @@
   "UDP_PORT":"9000",
   "name":"Polyptyque",
   "description":"Projet expérimental de portraits 3D hybrides",
+  "shooting_timout":6000,
   "slave-modules":[
     "localhost",
     "cm1","cm2","cm3","cm4","cm5","cm6","cm7","cm8","cm9"
