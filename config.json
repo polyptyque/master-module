@@ -1,5 +1,5 @@
 {
-  "HTTP_PORT":"8080",
+  "HTTP_PORT":"80",
   "UDP_PORT":"9000",
   "name":"Polyptyque",
   "description":"Projet expérimental de portraits 3D hybrides",
