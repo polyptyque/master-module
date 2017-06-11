@@ -135,7 +135,7 @@ function postImage(req, res) {
         return;
     }
 
-    console.log('Images are posted...');
+    console.log('Images are posted...',modId);
     //console.log(headers);
 
     if (!fs.existsSync(uploadDir)){
@@ -146,7 +146,7 @@ function postImage(req, res) {
 
     form.parse(req, function (err, fields, files) {
         res.writeHead(200, {'content-type': 'text/plain'});
-        res.write('received upload:\n\n');
+        res.write('received upload from '+modId+':\n\n');
 
         if(!files) return console.log('Upload error',modId);
 
