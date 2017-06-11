@@ -253,6 +253,7 @@ function shot(req,res,next){
         shooting_timeout = setTimeout(function(){
             console.log('shooting fail', uid);
             shooting_timeout = shooting = false;
+            sendJsonUPD({action:'reset_shooting'});
             res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
         },2000);
     }else{
