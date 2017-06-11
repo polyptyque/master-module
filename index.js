@@ -18,6 +18,7 @@ var fs = require('fs.extra');
 var multiparty = require('multiparty');
 var util = require('util');
 var request = require('request');
+var progress = require('request-progress');
 var targz = require('tar.gz');
 //
 // express handlerbars template
@@ -79,7 +80,7 @@ var camera_mapping = [
 shooting = false, shooting_start,
 shooting_timeout = false,
 shot_uid, shooting_responses,
-cm_count = 10, cm_success = 0, cm_ips = [];
+cm_count = 10, cm_success = 0, cm_downloaded = 0, cm_ips = [];
 
 const HTTP_PORT=config.HTTP_PORT;
 const UDP_PORT=config.UDP_PORT;
@@ -166,9 +167,15 @@ function postImage(req, res) {
                 }else if(name == 'a' && b){
                     Copy(b);
                 }else{
+                    cm_downloaded ++;
                     console.log('compute module',modId,'upload Done.');
                     res.end(util.inspect({fields: fields, files: files}));
-                    DownloadShot();
+                    //
+                    if(cm_downloaded == cm_count){
+                        ArchiveShot();
+                    }
+                    //
+
                 }
             });
         }
@@ -192,18 +199,11 @@ function AllImagesShooted(){
 }
 
 function DownloadShot(){
-    var ip = cm_ips.pop();
-    if(ip){
-        console.log('Download from cm',ip);
-        var message = {action:'send_images',uid:shot_uid},
-            messageStr = JSON.stringify(message);
+    var message = {action:'send_images',uid:shot_uid},
+        messageStr = JSON.stringify(message);
+    _(cm_ips).each(function(){
         client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
-        //DownloadShot();
-    }else{
-        // Toutes les images ont été téléchargées.
-        shooting = false;
-        ArchiveShot();
-    }
+    });
 }
 
 function ArchiveShot(){
@@ -225,7 +225,12 @@ function ArchiveShot(){
             if (err) {
                 return console.error('Upload failed:', err);
             }
+            var ellapsed_time = (new Date()).getTime() - shooting_start;
+            console.log('Upload successful! ellapsed time %s sec',Math.round(ellapsed_time/1000));
             console.log('Upload successful!  Server responded with:', body);
+        });
+        progress(req).on('progress',function(state){
+            console.log('%s% speed : %s',state.percent,state.speed/1024)
         });
         var form = req.form(),
             form_response = {};
@@ -245,6 +250,7 @@ function shot(req,res,next){
         shooting_start = (new Date()).getTime();
         shooting_responses = _({}).extend(req.body);
         cm_ips = [];
+        cm_downloaded = 0; // reset the Compute Module downloaded count
         cm_success = 0; // reset the Compute Module success count
         var uid = shot_uid = (new Date()).getTime() + '_' + sha1(Math.random()), message = {action: "shot", uid: uid},
             messageStr = JSON.stringify(message);
