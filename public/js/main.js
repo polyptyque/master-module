@@ -4,6 +4,8 @@ jQuery(document).ready(function($){
         shotUid;
 
     $('input[type=range]').slider();
+    $('[name=hostname]').val(location.hostname);
+    $('[name=port]').val(location.port);
 
     $('#btn-back').click(function(e){
         var action = $(this).data('action');
