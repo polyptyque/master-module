@@ -60,6 +60,7 @@ jQuery(document).ready(function($){
                     setTimeout(function(){
                         ResetButton();
                     },1000);
+                    if(data.uid) shotUid = data.uid;
                     if(data.status == 'fail') alert('Les appareils photos semblent déjà occupés...');
 
                 }).fail(function(res,type,status){

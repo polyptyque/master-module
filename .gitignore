@@ -39,4 +39,5 @@ jspm_packages
 # Project
 cache/
 cache-archives*/
+secret.json
 .sass-cache/

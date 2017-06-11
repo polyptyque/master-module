@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 //
 var config = require('./config.json');
+var secret = require('./secret.json');
 var sha1 = require('sha1');
 //
 var _ = require('underscore');
@@ -76,7 +77,7 @@ var camera_mapping = [
 ],
 // shooting status
 shooting = false, shooting_start,
-shot_uid,
+shot_uid, shooting_responses,
 cm_count = 1, cm_success = 0, cm_ips = [];
 
 const HTTP_PORT=config.HTTP_PORT;
@@ -210,29 +211,29 @@ function ArchiveShot(){
     var shotDirPath = cacheDir+shot_uid,
         shotArchivePath = shotDirPath+'.tar.gz';
     //
-    var read = targz().createReadStream(shotDirPath);
-    var write = fs.createWriteStream(shotArchivePath);
 
-    function UploadToWebServer(){
-        console.log('UploadToWebServer');
-        var r = request.post('http://polyptyque.photo/upload', function optionalCallback (err, httpResponse, body) {
+    function UploadToWebServer(err){
+
+        if(err) return console.log(err);
+
+        var ellapsed_time = (new Date()).getTime() - shooting_start;
+        console.log('All images successfully downloaded & archived in %s ms.',ellapsed_time);
+
+        var req = request.post('http://polyptyque.photo/upload', function (err, res, body) {
             if (err) {
-                return console.error('upload failed:', err);
+                return console.error('Upload failed:', err);
             }
             console.log('Upload successful!  Server responded with:', body);
         });
-        var form = r.form();
-        form.append('meta',JSON.stringify({uid:shot_uid}));
-        form.append('form',JSON.stringify({uid:shot_uid}));
+        var form = req.form(),
+            form_response = {};
+        form.append('uid',shot_uid);
+        form.append('form_responses',JSON.stringify(shooting_responses));
+        form.append('signature',sha1(secret.private_key+shot_uid));
         form.append('archive', fs.createReadStream(shotArchivePath));
     }
     //
-    read.pipe(write)
-        .on('finish',function(){
-            var ellapsed_time = (new Date()).getTime() - shooting_start;
-            console.log('All images successfully downloaded & archived in %s ms.',ellapsed_time);
-            UploadToWebServer();
-        });
+    targz().compress(shotDirPath,shotArchivePath,UploadToWebServer)
 }
 
 // Ask camera shot from web interface
@@ -240,7 +241,8 @@ function shot(req,res,next){
     if(!shooting) {
         shooting = true;
         shooting_start = (new Date()).getTime();
-        cm_ips = [],
+        shooting_responses = _({}).extend(req.body);
+        cm_ips = [];
         cm_success = 0; // reset the Compute Module success count
         var uid = shot_uid = (new Date()).getTime() + '_' + sha1(Math.random()), message = {action: "shot", uid: uid},
             messageStr = JSON.stringify(message);
