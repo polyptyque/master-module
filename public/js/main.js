@@ -121,10 +121,12 @@ jQuery(document).ready(function($){
         e.stopPropagation();
 
         var hostname = $('[name="hostname"]').val();
-        if(hostname){
+        var port = $('[name="port"]').val();
+        if(hostname && port){
             sendMessage({
                 action:'update_master_configuration',
-                hostname:hostname
+                hostname:hostname,
+                port:port
             })
         }
     });
