@@ -100,7 +100,7 @@ jQuery(document).ready(function($){
         }
     });
 
-    var socket = io.connect('http://'+location.hostname+':'+HTTP_PORT_ALT);
+    var socket = io.connect('http://'+location.hostname+':'+HTTP_PORT);
     socket.on('postImage', function (data) {
         console.log(data,shotUid);
         if(data.shotUid == shotUid){

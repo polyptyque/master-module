@@ -93,7 +93,6 @@ shot_uid, shooting_responses,
 cm_count = 10, cm_success = 0, cm_downloaded = 0, cm_ips = [];
 
 const HTTP_PORT=config.HTTP_PORT;
-const HTTP_PORT_ALT=config.HTTP_PORT_ALT;
 const UDP_PORT=config.UDP_PORT;
 const UDP_ALL_IP = '255.255.255.255';
 
@@ -469,8 +468,8 @@ app.get('/debug',Debug);
 app.use(express.static('public'));
 app.use('/cache',express.static('cache'));
 
-http.listen(HTTP_PORT_ALT, function(){
-    logger('listening on *:' + HTTP_PORT_ALT);
+http.listen(HTTP_PORT, function(){
+    logger('listening on *:' + HTTP_PORT);
     // 404
     app.use(function(req, res, next) {
         res.status(404).end('404 not found \n'+req.url);
