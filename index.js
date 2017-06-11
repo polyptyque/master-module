@@ -343,7 +343,11 @@ app.post('/message',sendMessage);
 function sendJsonUPD(data){
     var dataStr = JSON.stringify(data);
     console.log('sendJsonUPD');
-    client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
+    _(config['slave-modules']).each(function(slaveModuleHost){
+        console.log('send to',slaveModuleHost);
+        client.send(dataStr, 0, dataStr.length, UDP_PORT, slaveModuleHost);
+    });
+    //client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
 }
 
 // Steps

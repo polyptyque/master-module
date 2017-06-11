@@ -1,8 +1,12 @@
 {
-  "HTTP_PORT":"80",
+  "HTTP_PORT":"8080",
   "UDP_PORT":"9000",
   "name":"Polyptyque",
   "description":"Projet expérimental de portraits 3D hybrides",
+  "slave-modules":[
+    "localhost",
+    "cm1","cm2","cm3","cm4","cm5","cm6","cm7","cm8","cm9"
+  ],
   "steps":[
     {
       "topic":"Qui êtes vous ?",

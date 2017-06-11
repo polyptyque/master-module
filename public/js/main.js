@@ -5,7 +5,7 @@ jQuery(document).ready(function($){
 
     $('input[type=range]').slider();
     $('[name=hostname]').val(location.hostname);
-    $('[name=port]').val(location.port | 80);
+    $('[name=port]').val(location.port || 80);
 
     $('#btn-back').click(function(e){
         var action = $(this).data('action');
