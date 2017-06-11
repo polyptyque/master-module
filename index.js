@@ -78,7 +78,7 @@ var camera_mapping = [
 // shooting status
 shooting = false, shooting_start,
 shot_uid, shooting_responses,
-cm_count = 1, cm_success = 0, cm_ips = [];
+cm_count = 10, cm_success = 0, cm_ips = [];
 
 const HTTP_PORT=config.HTTP_PORT;
 const UDP_PORT=config.UDP_PORT;
