@@ -260,16 +260,19 @@ function configAction(req,res,next){
         from = req.header('x-from');
     if(action == 'get_camera_options'){
         get_camera_options(from,req,res,next)
-    }
-    if(action == 'set_camera_options'){
+    }else if(action == 'set_camera_options'){
         set_camera_options(from,req,res,next)
-    }
-    if(action == 'restart_camera'){
-        restart_camera(from,req,res,next)
-    }
-    if(action == 'get_status'){
+    }else if(action == 'get_status'){
         get_status(from,req,res,next);
+    }else{
+        DefaultConfigAction(action,req,res);
     }
+}
+
+function DefaultConfigAction(action,req,res){
+    sendJsonUPD({action:action});
+    res.json({status:'ok',action:action});
+    console.log('config action : ',action);
 }
 
 var get_camera_options_timeout = false,
@@ -299,12 +302,6 @@ function set_camera_options(from,req,res,next){
     sendJsonUPD({action:'set_camera_options',options:req.body});
     res.json({status:'ok'});
     console.log('set_camera_options');
-}
-
-function restart_camera(from,req,res,next){
-    sendJsonUPD({action:'restart_camera'});
-    res.json({status:'ok'});
-    console.log('restart_camera');
 }
 
 function get_status(from,req,res,next){
