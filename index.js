@@ -15,6 +15,7 @@ var sha1 = require('sha1');
 var _ = require('underscore');
 //
 var fs = require('fs.extra');
+var path = require('path');
 var multiparty = require('multiparty');
 var util = require('util');
 var request = require('request');
