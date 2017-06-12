@@ -147,7 +147,7 @@ function postImage(req, res) {
         return;
     }
 
-    logger('Images are posted...',modId);
+    LogEllapsedTime('Images are posted... '+modId);
     //console.log(headers);
 
     if (!fs.existsSync(uploadDir)){
