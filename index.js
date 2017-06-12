@@ -295,8 +295,6 @@ function configAction(req,res,next){
         set_camera_options(from,req,res,next)
     }else if(action == 'get_status'){
         get_status(from,req,res,next);
-    }else if(action == 'reset_shooting'){
-        reset_shooting(req,res);
     }else{
         DefaultConfigAction(action,req,res);
     }
