@@ -266,7 +266,7 @@ function shot(req,res,next){
             message = {action: "shot", uid: uid};
             //messageStr = JSON.stringify(message);
         //client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
-        sendJsonUPD(message);
+        sendJsonUPD(message,'both');
         logger('sending shot ! port : '+ UDP_ALL_IP + ':'+ UDP_PORT);
         shooting_timeout = setTimeout(function(){
             logger('shooting timeout '+config.shooting_timout+' ms for '+uid, LOG_LEVEL_WARNING );
@@ -367,11 +367,14 @@ function sendJsonUPD(data,broadcast){
     var dataStr = JSON.stringify(data);
     if(broadcast){
         client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
-    }else{
+    }
+
+    if(broadcast == 'both' || !broadcast){
         _(config.modules_hosts).each(function(host){
             client.send(dataStr, 0, dataStr.length, UDP_PORT, host);
         });
     }
+
 }
 
 // Steps
