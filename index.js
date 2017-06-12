@@ -231,6 +231,7 @@ function ArchiveShot(){
         shotArchivePath = shotDirPath+'.tar.gz';
     //
 
+    /*
     function UploadToWebServer(err){
 
         if(err) return console.log(err);
@@ -256,15 +257,36 @@ function ArchiveShot(){
         form.append('signature',sha1(secret.private_key+shot_uid));
         form.append('archive', fs.createReadStream(shotArchivePath));
     }
+    */
     //
     function UploadSFTP(){
         var shotArchivePathAbsolute = path.resolve(shotArchivePath);
         logger('UploadSFTP '+shotArchivePathAbsolute);
-        var message = JSON.stringify({action:"transfert_sftp",options:{filepath:shotArchivePathAbsolute}});
+        var message = JSON.stringify({action:"transfert_sftp",options:{filepath:shotArchivePathAbsolute, uid:shot_uid}});
         client.send(message, 0, message.length, UDP_PORT, 'localhost');
     }
     //
     targz().compress(shotDirPath,shotArchivePath,UploadSFTP)
+}
+
+
+function ftp_complete(req,res,next){
+    res.send('Thank you for FTP transfert.');
+    var options = req.body;
+    console.log(options);
+    var uploadReq = request.post('http://polyptyque.photo/upload', function (err, res, body) {
+        if (err) {
+            return console.error('Upload failed:', err);
+        }
+        LogEllapsedTime('Upload successful! ellapsed time');
+        logger('Upload successful!  Server responded with:'+ body);
+    });
+    var form = uploadReq.form(),
+        form_response = {};
+    form.append('uid',shot_uid);
+    form.append('form_responses',JSON.stringify(shooting_responses));
+    form.append('signature',sha1(secret.private_key+shot_uid));
+    //form.append('archive', fs.createReadStream(shotArchivePath));
 }
 
 // Ask camera shot from web interface
@@ -295,6 +317,9 @@ function shot(req,res,next){
         res.status(200).json({status: 'fail', error:'buzzy'});
     }
 }
+
+// FTP UPLOAD COMPLETE
+app.post('/ftp_complete',ftp_complete);
 
 // Shot
 app.post('/shot',shot);
