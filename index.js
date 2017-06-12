@@ -256,7 +256,14 @@ function ArchiveShot(){
         form.append('archive', fs.createReadStream(shotArchivePath));
     }
     //
-    targz().compress(shotDirPath,shotArchivePath,UploadToWebServer)
+    function UploadSFTP(){
+        var shotArchivePathAbsolute = path.resolve(shotArchivePath);
+        logger('UploadSFTP '+shotArchivePathAbsolute);
+        var message = JSON.stringify({action:"transfert_sftp",options:{filepath:shotArchivePathAbsolute}});
+        client.send(message, 0, message.length, UDP_PORT, 'localhost');
+    }
+    //
+    targz().compress(shotDirPath,shotArchivePath,UploadSFTP)
 }
 
 // Ask camera shot from web interface
