@@ -462,8 +462,16 @@ app.use('/step-:step', function (req, res, next) {
 });
 
 function LogEllapsedTime(message){
-    var ellapsed_time = (new Date()).getTime() - shooting_start;
-    logger(message+' in '+ellapsed_time+' ms.');
+    var ellapsed_time = (new Date()).getTime() - shooting_start,
+        ellapsed_time_human = ellapsed_time + ' ms.';
+    if(ellapsed_time>1000){
+        Math.round(ellapsed_time_human/10000)/10 + ' sec.'
+    }
+    if(ellapsed_time>60000){
+        Math.round(ellapsed_time_human/600000)/10 + ' min.'
+    }
+
+    logger(message+' in '+ellapsed_time_human);
 }
 
 // Debug
