@@ -259,7 +259,7 @@ function shot(req,res,next){
     if(!shooting) {
         shooting = true;
         shooting_start = (new Date()).getTime();
-        shooting_res = res,
+        shooting_res = res;
         shooting_responses = _({}).extend(req.body);
         cm_ips = [];
         cm_downloaded = 0; // reset the Compute Module downloaded count
