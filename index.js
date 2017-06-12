@@ -140,7 +140,7 @@ function postImage(req, res) {
             cm_ips.push(ip);
         }
         res.end(message);
-        logger(message);
+        logger(message,status == 'ok' ? LOG_LEVEL_DEBUG : LOG_LEVEL_ERROR);
         if(cm_success == cm_count){
             AllImagesShooted();
         }
@@ -269,7 +269,7 @@ function shot(req,res,next){
         client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
         logger('sending shot ! port : '+ UDP_ALL_IP + ':'+ UDP_PORT);
         shooting_timeout = setTimeout(function(){
-            logger('shooting timeout %s ms for %s', config.shooting_timout, uid);
+            logger('shooting timeout '+config.shooting_timout+' ms for '+uid, LOG_LEVEL_WARNING );
             shooting_timeout = shooting = false;
             sendJsonUPD({action:'reset_shooting'});
             res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
