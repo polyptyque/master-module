@@ -89,6 +89,7 @@ var camera_mapping = [
 // shooting status
 shooting = false, shooting_start,
 shooting_timeout = false,
+shooting_res = false,
 shot_uid, shooting_responses,
 cm_count = 10, cm_success = 0, cm_downloaded = 0, cm_ips = [];
 
@@ -258,6 +259,7 @@ function shot(req,res,next){
     if(!shooting) {
         shooting = true;
         shooting_start = (new Date()).getTime();
+        shooting_res = res,
         shooting_responses = _({}).extend(req.body);
         cm_ips = [];
         cm_downloaded = 0; // reset the Compute Module downloaded count
@@ -272,8 +274,10 @@ function shot(req,res,next){
             logger('shooting timeout '+config.shooting_timout+' ms for '+uid, LOG_LEVEL_WARNING );
             shooting_timeout = shooting = false;
             sendJsonUPD({action:'reset_shooting'});
-            res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
+            //res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
         },config.shooting_timout);
+        shooting_res.send({status:'ok',uid:shot_uid});
+
     }else{
         res.status(200).json({status: 'fail', error:'buzzy'});
     }
