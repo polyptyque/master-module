@@ -264,9 +264,11 @@ function shot(req,res,next){
         cm_ips = [];
         cm_downloaded = 0; // reset the Compute Module downloaded count
         cm_success = 0; // reset the Compute Module success count
-        var uid = shot_uid = (new Date()).getTime() + '_' + sha1(Math.random()), message = {action: "shot", uid: uid},
-            messageStr = JSON.stringify(message);
-        client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
+        var uid = shot_uid = (new Date()).getTime() + '_' + sha1(Math.random()),
+            message = {action: "shot", uid: uid};
+            //messageStr = JSON.stringify(message);
+        //client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
+        sendJsonUPD(message,true);
         logger('sending shot ! port : '+ UDP_ALL_IP + ':'+ UDP_PORT);
         shooting_timeout = setTimeout(function(){
             logger('shooting timeout '+config.shooting_timout+' ms for '+uid, LOG_LEVEL_WARNING );
@@ -293,6 +295,8 @@ function configAction(req,res,next){
         set_camera_options(from,req,res,next)
     }else if(action == 'get_status'){
         get_status(from,req,res,next);
+    }else if(action == 'reset_shooting'){
+        reset_shooting(req,res);
     }else{
         DefaultConfigAction(action,req,res);
     }
@@ -302,6 +306,10 @@ function DefaultConfigAction(action,req,res){
     sendJsonUPD({action:action});
     res.json({status:'ok',action:action});
     logger('config action : '+action);
+}
+
+function reset_shooting(req,res){
+    client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
 }
 
 var get_camera_options_timeout = false,
@@ -359,9 +367,15 @@ function sendMessage(req,res,next){
 app.post('/message',sendMessage);
 
 // Send raw json via UDP broadcast
-function sendJsonUPD(data){
+function sendJsonUPD(data,broadcast){
     var dataStr = JSON.stringify(data);
-    client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
+    if(broadcast){
+        client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
+    }else{
+        _(config.modules_hosts).each(function(host){
+            client.send(dataStr, 0, dataStr.length, UDP_PORT, host);
+        });
+    }
 }
 
 // Steps
