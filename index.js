@@ -233,6 +233,8 @@ function ArchiveShot(){
 
         LogEllapsedTime('All images successfully downloaded & archived');
 
+        logger(shotArchivePath+' -> '+(fs.statSync(shotArchivePath).size/1000000)+'mb');
+
         var req = request.post('http://polyptyque.photo/upload', function (err, res, body) {
             if (err) {
                 return console.error('Upload failed:', err);
