@@ -180,7 +180,7 @@ function postImage(req, res) {
                     Copy(b);
                 }else{
                     cm_downloaded ++;
-                    logger('compute module '+modId+' upload Done.');
+                    LogEllapsedTime('compute module '+modId+' upload Done.');
                     res.end(util.inspect({fields: fields, files: files}));
                     //
                     if(cm_downloaded == cm_count){
@@ -201,7 +201,7 @@ app.post('/post',postImage);
 
 function AllImagesShooted(){
     // all images are shooted, start download from cm
-    logger('All images are shooted !');
+    LogEllapsedTime('All images are shooted');
     if(shooting_timeout){
         clearTimeout(shooting_timeout);
         DownloadShot();
@@ -230,15 +230,13 @@ function ArchiveShot(){
 
         if(err) return console.log(err);
 
-        var ellapsed_time = (new Date()).getTime() - shooting_start;
-        logger('All images successfully downloaded & archived in %s ms.',ellapsed_time);
+        LogEllapsedTime('All images successfully downloaded & archived');
 
         var req = request.post('http://polyptyque.photo/upload', function (err, res, body) {
             if (err) {
                 return console.error('Upload failed:', err);
             }
-            var ellapsed_time = (new Date()).getTime() - shooting_start;
-            logger('Upload successful! ellapsed time %s sec',Math.round(ellapsed_time/1000));
+            LogEllapsedTime('Upload successful! ellapsed time');
             logger('Upload successful!  Server responded with:'+ body);
         });
         progress(req).on('progress',function(state){
@@ -442,6 +440,11 @@ app.use('/step-:step', function (req, res, next) {
     options = _(options).extend(stepConfig);
     res.render('step', options);
 });
+
+function LogEllapsedTime(message){
+    var ellapsed_time = (new Date()).getTime() - shooting_start;
+    logger(message+' in '+ellapsed_time+' ms.');
+}
 
 // Debug
 function Debug(req, res, next) {
