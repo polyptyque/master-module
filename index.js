@@ -186,6 +186,8 @@ function postImage(req, res) {
                     //
                     if(cm_downloaded == cm_count){
                         ArchiveShot();
+                    }else{
+                        DownloadShot()
                     }
                     //
 
@@ -213,10 +215,11 @@ function AllImagesShooted(){
 
 function DownloadShot(){
     var message = {action:'send_images',uid:shot_uid},
-        messageStr = JSON.stringify(message);
-    _(cm_ips).each(function(ip){
+        messageStr = JSON.stringify(message),
+        ip = cm_ips.pop();
+    //_(cm_ips).each(function(ip){
         client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
-    });
+    //});
 }
 
 function ArchiveShot(){
