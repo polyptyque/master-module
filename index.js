@@ -163,7 +163,7 @@ function postImage(req, res) {
     //console.log(headers);
 
     if (!fs.existsSync(uploadDir)){
-        fs.mkdirSync(uploadDir, 777);
+        fs.mkdirSync(uploadDir, 775);
     }
 
     cm_downloaded ++;
@@ -328,7 +328,7 @@ function shot(req,res,next){
 
         // on créé le dossier d'upload
         if (!fs.existsSync(uploadDir)){
-            fs.mkdirSync(uploadDir, 777);
+            fs.mkdirSync(uploadDir, 775);
         }
         shooting_res.send({status:'ok',uid:shot_uid});
 
