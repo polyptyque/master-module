@@ -67,25 +67,35 @@ function logger(message,logLevel){
 }
 
 var camera_mapping = [
-    '1-b',
-    '1-a',
-    '2-b',
-    '2-a',
-    '3-b',
-    '3-a',
-    '4-b',
-    '4-a',
-    '5-b',
-    '0-a',
-    '5-a',
-    '6-b',
-    '6-a',
-    '7-b',
-    '7-a',
-    '8-b',
-    '8-a',
-    '9-b',
-    '9-a',
+    '1-b', // 0
+    '1-a', // 1
+
+    '2-b', // 2
+    '2-a', // 3
+
+    '3-b', // 4
+    '3-a', // 5
+
+    '4-b', // 6
+    '4-a', // 7
+
+    '5-b', // 8
+
+    '0-a', // 9
+
+    '5-a', // 10
+
+    '6-b', // 11
+    '6-a', // 12
+
+    '7-b', // 13
+    '7-a', // 14
+
+    '8-b', // 15
+    '8-a', // 16
+
+    '9-b', // 17
+    '9-a'  // 18
 ],
 // shooting status
 shooting = false, shooting_start,
@@ -300,9 +310,15 @@ function shot(req,res,next){
         cm_downloaded = 0; // reset the Compute Module downloaded count
         cm_success = 0; // reset the Compute Module success count
         var uid = shot_uid = (new Date()).getTime() + '_' + sha1(Math.random()),
-            message = {action: "shot", uid: uid};
-            //messageStr = JSON.stringify(message);
-        //client.send(messageStr, 0, messageStr.length, UDP_PORT, UDP_ALL_IP);
+            message = {action: "shot", uid: uid},
+            uploadDir = cacheDir+uid+'/';
+
+        // on créé le dossier d'upload
+        if (!fs.existsSync(uploadDir)){
+            fs.mkdirSync(uploadDir);
+        }
+        shooting_res.send({status:'ok',uid:shot_uid});
+
         sendJsonUPD(message,'both');
         logger('sending shot ! port : '+ UDP_ALL_IP + ':'+ UDP_PORT);
         shooting_timeout = setTimeout(function(){
@@ -311,7 +327,6 @@ function shot(req,res,next){
             sendJsonUPD({action:'reset_shooting'});
             //res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
         },config.shooting_timout);
-        shooting_res.send({status:'ok',uid:shot_uid});
 
     }else{
         res.status(200).json({status: 'fail', error:'buzzy'});
