@@ -102,7 +102,7 @@ shooting = false, shooting_start,
 shooting_timeout = false,
 shooting_res = false,
 shot_uid, shooting_responses,
-cm_count = 10, cm_success = 0, cm_downloaded = 0, cm_ips = [];
+cm_count = 1, cm_success = 0, cm_downloaded = 0, cm_ips = [];
 
 const HTTP_PORT=config.HTTP_PORT;
 const UDP_PORT=config.UDP_PORT;
@@ -111,6 +111,7 @@ const UDP_ALL_IP = '255.255.255.255';
 var cacheDir = 'cache/';
 if (!fs.existsSync(cacheDir)){
     fs.mkdirSync(cacheDir);
+    fs.chmodSync(cacheDir,755);
 }
 
 
@@ -161,10 +162,6 @@ function postImage(req, res) {
 
     LogEllapsedTime('Images are posted... '+modId);
     //console.log(headers);
-
-    if (!fs.existsSync(uploadDir)){
-        fs.mkdirSync(uploadDir, 775);
-    }
 
     cm_downloaded ++;
     LogEllapsedTime('compute module '+modId+' upload Done.');
@@ -240,7 +237,8 @@ function AllImagesShooted(){
 function DownloadShot(){
     var message = {action:'send_images',uid:shot_uid},
         messageStr = JSON.stringify(message),
-        ip = cm_ips.pop();
+        ip = 'localhost';//cm_ips.pop();
+    logger('DownloadShot '+ip);
     //_(cm_ips).each(function(ip){
         client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
     //});
@@ -328,7 +326,10 @@ function shot(req,res,next){
 
         // on créé le dossier d'upload
         if (!fs.existsSync(uploadDir)){
-            fs.mkdirSync(uploadDir, 775);
+            fs.mkdirSync(uploadDir);
+            fs.mkdirSync(uploadDir+'/x  ');
+            logger(parseInt('00777',8));
+            fs.chmodSync(uploadDir, parseInt('00777',8))
         }
         shooting_res.send({status:'ok',uid:shot_uid});
 
@@ -363,6 +364,10 @@ function configAction(req,res,next){
         set_camera_options(from,req,res,next)
     }else if(action == 'get_status'){
         get_status(from,req,res,next);
+    }else if(action == 'reset_shooting'){
+        shooting = false;
+        logger('reset shooting',LOG_LEVEL_WARNING)
+        DefaultConfigAction(action,req,res);
     }else{
         DefaultConfigAction(action,req,res);
     }
@@ -372,10 +377,6 @@ function DefaultConfigAction(action,req,res){
     sendJsonUPD({action:action});
     res.json({status:'ok',action:action});
     logger('config action : '+action);
-}
-
-function reset_shooting(req,res){
-    client.send(dataStr, 0, dataStr.length, UDP_PORT, UDP_ALL_IP);
 }
 
 var get_camera_options_timeout = false,

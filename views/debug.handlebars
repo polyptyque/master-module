@@ -17,9 +17,6 @@
         <div class="row">
         <h3 class="h3">Configurations des caméras</h3>
 
-        <button type="button" data-action="get_camera_options" class="btn btn-default config-button">Synchroniser</button>
-        <button type="button" data-action="set_camera_options" class="btn btn-default config-button">Sauvegarder</button>
-        <button type="button" data-action="restart_camera" class="btn btn-default config-button">Redémarrer la camera</button>
         <button type="button" data-action="get_status" class="btn btn-default config-button">Status</button>
         <button type="button" data-action="toggle_preview" class="btn btn-default config-button">Toggle Preview</button>
         <button type="button" data-action="reset_shooting" class="btn btn-default config-button">Reset shooting</button>
@@ -77,6 +74,17 @@
             {{/each}}
 
         </fieldset>
+        </div>
+
+        <div>
+            <h3>fonction avancées</h3>
+            <fieldset>
+                <button type="button" data-action="purge_cache" class="btn btn-default config-button">Purger les caches</button>
+                <button type="button" disabled data-action="restart_camera" class="btn btn-default config-button">Redémarrer la camera</button>
+                <button type="button" data-action="get_camera_options" class="btn btn-default config-button">Synchroniser</button>
+                <button type="button" data-action="set_camera_options" class="btn btn-default config-button">Sauvegarder</button>
+            </fieldset>
+            <hr>
         </div>
     </form>
 
