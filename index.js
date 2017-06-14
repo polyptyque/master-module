@@ -302,18 +302,15 @@ function ftp_complete(req,res,next){
             signature: sha1(secret.private_key + shot_uid)
         };
     logger('sftp transfert complete.');
-    request.post({
-        url: url,
-        form: data
-    },function (err, res, body) {
+    LogEllapsedTime('HTTP request POST on '+url);
+    console.log(data);
+    request.post(url,function (err, res, body) {
         if (err) {
             return console.error('Upload failed:', err);
         }
         LogEllapsedTime('Upload status code '+ res.statusCode);
         logger('Server response:'+ body);
-    });
-    LogEllapsedTime('HTTP request POST on '+url);
-    console.log(data);
+    }).form(data);
 
 }
 
