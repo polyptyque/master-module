@@ -300,15 +300,15 @@ function ftp_complete(req,res,next){
         url: url,
         form: {
             uid: shot_uid,
-            form_responses: JSON.stringify(shooting_responses),
+            form_responses: shooting_responses,
             signature: sha1(secret.private_key + shot_uid)
         }
     },function (err, res, body) {
         if (err) {
             return console.error('Upload failed:', err);
         }
-        LogEllapsedTime('Upload successful ');
-        logger('Server responded with:'+ body);
+        LogEllapsedTime('Upload status '+ res.status);
+        logger('Server response:'+ body);
     });
     LogEllapsedTime('HTTP request POST on ',url);
 
