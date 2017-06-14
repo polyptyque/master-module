@@ -522,10 +522,10 @@ function LogEllapsedTime(message){
     var ellapsed_time = (new Date()).getTime() - shooting_start,
         ellapsed_time_human = ellapsed_time + ' ms.';
     if(ellapsed_time>1000){
-        ellapsed_time_human = Math.round(ellapsed_time/10000)/10 + ' sec.'
+        ellapsed_time_human = Math.round(ellapsed_time/100)*10 + ' sec.'
     }
     if(ellapsed_time>60000){
-        ellapsed_time_human = Math.round(ellapsed_time/600000)/10 + ' min.'
+        ellapsed_time_human = Math.round(ellapsed_time/6000)*600 + ' min.'
     }
 
     logger(message+' in '+ellapsed_time_human);
