@@ -5,7 +5,7 @@
   "description":"Projet expérimental de portraits 3D hybrides",
   "shooting_timout":6000,
   "modules_hosts":[
-    "localhost",
+    "master",
     "cm1","cm2","cm3","cm4","cm5","cm6","cm7","cm8","cm9"
   ],
   "default_responses":{
