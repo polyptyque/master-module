@@ -294,15 +294,16 @@ function ArchiveShot(){
 
 function ftp_complete(req,res,next){
     res.send('Thank you for FTP transfert.');
-    var url = 'http://polyptyque.photo/upload';
-    logger('sftp transfert complete.');
-    request.post({
-        url: url,
-        form: {
+    var url = 'http://polyptyque.photo/upload',
+        data =  {
             uid: shot_uid,
             form_responses: shooting_responses,
             signature: sha1(secret.private_key + shot_uid)
-        }
+        };
+    logger('sftp transfert complete.');
+    request.post({
+        url: url,
+        form: data
     },function (err, res, body) {
         if (err) {
             return console.error('Upload failed:', err);
@@ -310,7 +311,8 @@ function ftp_complete(req,res,next){
         LogEllapsedTime('Upload status code '+ res.statusCode);
         logger('Server response:'+ body);
     });
-    LogEllapsedTime('HTTP request POST on ',url);
+    LogEllapsedTime('HTTP request POST on '+url);
+    console.log(data);
 
 }
 
