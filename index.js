@@ -320,7 +320,7 @@ function ftp_complete(req,res,next){
 function ftp_progess(req,res,next){
     res.send('thanks.');
     console.log('ftp_progess',req.body)
-    io.emit('logger',{message:JSON.stringify(req.body),level:logLevel});
+    io.emit('logger',{message:JSON.stringify(req.body),level:LOG_LEVEL_VERBOSE});
 }
 
 // Ask camera shot from web interface

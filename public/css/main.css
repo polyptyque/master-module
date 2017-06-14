@@ -463,6 +463,7 @@ iframe.demo {
   .logger .level-3 {
     color: rgba(255, 240, 195, 0.5); }
   .logger .level-4 {
-    color: #6bff94; }
+    color: #6bff94;
+    font-weight: bold; }
 
 /*# sourceMappingURL=main.css.map */

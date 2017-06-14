@@ -109,6 +109,7 @@ iframe.demo{
   padding: .5em;
   margin: .5em 0;
   .level-0{
+    // error
     color:$red;
   }
   .level-1{
@@ -118,9 +119,12 @@ iframe.demo{
     color:$grey;
   }
   .level-3{
+    // verbose
     color:transparentize($beige,.5);
   }
   .level-4{
+    // success
     color:$green;
+    font-weight: bold;
   }
 }
