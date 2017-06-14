@@ -294,10 +294,10 @@ function ArchiveShot(){
 
 function ftp_complete(req,res,next){
     res.send('Thank you for FTP transfert.');
-    var options = req.body;
+    var url = 'http://polyptyque.photo/upload';
     logger('sftp transfert complete.');
     request.post({
-        url: 'http://polyptyque.photo/upload',
+        url: url,
         form: {
             uid: shot_uid,
             form_responses: JSON.stringify(shooting_responses),
@@ -307,9 +307,11 @@ function ftp_complete(req,res,next){
         if (err) {
             return console.error('Upload failed:', err);
         }
-        LogEllapsedTime('Upload successful! ellapsed time');
-        logger('Upload successful!  Server responded with:'+ body);
-    })
+        LogEllapsedTime('Upload successful ');
+        logger('Server responded with:'+ body);
+    });
+    LogEllapsedTime('HTTP request POST on ',url);
+
 }
 
 // Ask camera shot from web interface
