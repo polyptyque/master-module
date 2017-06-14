@@ -283,7 +283,7 @@ function ArchiveShot(){
     //
     function UploadSFTP(){
         var shotArchivePathAbsolute = path.resolve(shotArchivePath);
-        logger('Upload sftp '+shotArchivePathAbsolute+' '+fs.statSync(shotArchivePathAbsolute).size/1000+'mb');
+        logger('Upload sftp '+shotArchivePathAbsolute+' -> '+Math.round(fs.statSync(shotArchivePathAbsolute).size/1000)+'kb');
         var message = JSON.stringify({action:"transfert_sftp",options:{filepath:shotArchivePathAbsolute, uid:shot_uid}});
         client.send(message, 0, message.length, UDP_PORT, 'localhost');
     }
@@ -295,19 +295,21 @@ function ArchiveShot(){
 function ftp_complete(req,res,next){
     res.send('Thank you for FTP transfert.');
     var options = req.body;
-    logger('sftp transfert complete.')
-    var uploadReq = request.post('http://polyptyque.photo/upload', function (err, res, body) {
+    logger('sftp transfert complete.');
+    request.post({
+        url: 'http://polyptyque.photo/upload',
+        form: {
+            uid: shot_uid,
+            form_responses: JSON.stringify(shooting_responses),
+            signature: sha1(secret.private_key + shot_uid)
+        }
+    },function (err, res, body) {
         if (err) {
             return console.error('Upload failed:', err);
         }
         LogEllapsedTime('Upload successful! ellapsed time');
         logger('Upload successful!  Server responded with:'+ body);
-    });
-    var form = uploadReq.form();
-    form.append('uid',shot_uid);
-    form.append('form_responses',JSON.stringify(shooting_responses));
-    form.append('signature',sha1(secret.private_key+shot_uid));
-    //form.append('archive', fs.createReadStream(shotArchivePath));
+    })
 }
 
 // Ask camera shot from web interface
@@ -327,7 +329,6 @@ function shot(req,res,next){
         // on créé le dossier d'upload
         if (!fs.existsSync(uploadDir)){
             fs.mkdirSync(uploadDir);
-            fs.mkdirSync(uploadDir+'/x  ');
             logger(parseInt('00777',8));
             fs.chmodSync(uploadDir, parseInt('00777',8))
         }
@@ -519,10 +520,10 @@ function LogEllapsedTime(message){
     var ellapsed_time = (new Date()).getTime() - shooting_start,
         ellapsed_time_human = ellapsed_time + ' ms.';
     if(ellapsed_time>1000){
-        Math.round(ellapsed_time_human/10000)/10 + ' sec.'
+        ellapsed_time_human = Math.round(ellapsed_time/10000)/10 + ' sec.'
     }
     if(ellapsed_time>60000){
-        Math.round(ellapsed_time_human/600000)/10 + ' min.'
+        ellapsed_time_human = Math.round(ellapsed_time/600000)/10 + ' min.'
     }
 
     logger(message+' in '+ellapsed_time_human);
