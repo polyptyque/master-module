@@ -442,7 +442,6 @@ function sendJsonUPD(data,broadcast){
 
     if(broadcast == 'both' || !broadcast){
         _(config.modules_hosts).each(function(host){
-            logger('sending datagram to '+host+':'+UDP_PORT)
             client.send(dataStr, 0, dataStr.length, UDP_PORT, host);
         });
     }
