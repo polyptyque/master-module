@@ -283,7 +283,7 @@ function ArchiveShot(){
     //
     function UploadSFTP(){
         var shotArchivePathAbsolute = path.resolve(shotArchivePath);
-        logger('UploadSFTP '+shotArchivePathAbsolute);
+        logger('Upload sftp '+shotArchivePathAbsolute+' '+fs.statSync(shotArchivePathAbsolute).size/1000+'mb');
         var message = JSON.stringify({action:"transfert_sftp",options:{filepath:shotArchivePathAbsolute, uid:shot_uid}});
         client.send(message, 0, message.length, UDP_PORT, 'localhost');
     }
@@ -295,7 +295,7 @@ function ArchiveShot(){
 function ftp_complete(req,res,next){
     res.send('Thank you for FTP transfert.');
     var options = req.body;
-    console.log(options);
+    logger('sftp transfert complete.')
     var uploadReq = request.post('http://polyptyque.photo/upload', function (err, res, body) {
         if (err) {
             return console.error('Upload failed:', err);
