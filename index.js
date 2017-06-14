@@ -316,6 +316,12 @@ function ftp_complete(req,res,next){
 
 }
 
+function ftp_progess(req,res,next){
+    res.send('thanks.');
+    console.log('ftp_progess',req.body)
+    io.emit('logger',{message:JSON.stringify(req.body),level:logLevel});
+}
+
 // Ask camera shot from web interface
 function shot(req,res,next){
     if(!shooting) {
@@ -354,6 +360,7 @@ function shot(req,res,next){
 
 // FTP UPLOAD COMPLETE
 app.post('/ftp_complete',ftp_complete);
+app.post('/ftp_progess',ftp_progess);
 
 // Shot
 app.post('/shot',shot);
