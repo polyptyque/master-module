@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 var config = require('./config.json');
 var secret = require('./secret.json');
 var sha1 = require('sha1');
+var format = require('date-format');
 //
 var _ = require('underscore');
 //
@@ -302,8 +303,7 @@ function ftp_complete(req,res,next){
         LogEllapsedTime('Upload successful! ellapsed time');
         logger('Upload successful!  Server responded with:'+ body);
     });
-    var form = uploadReq.form(),
-        form_response = {};
+    var form = uploadReq.form();
     form.append('uid',shot_uid);
     form.append('form_responses',JSON.stringify(shooting_responses));
     form.append('signature',sha1(secret.private_key+shot_uid));
@@ -316,11 +316,11 @@ function shot(req,res,next){
         shooting = true;
         shooting_start = (new Date()).getTime();
         shooting_res = res;
-        shooting_responses = _({}).extend(req.body);
+        shooting_responses = _(config.default_responses).extend(req.body);
         cm_ips = [];
         cm_downloaded = 0; // reset the Compute Module downloaded count
         cm_success = 0; // reset the Compute Module success count
-        var uid = shot_uid = (new Date()).getTime() + '_' + sha1(Math.random()),
+        var uid = shot_uid = format.asString('yyMMdd-hhmmss-',new Date()) + sha1(Math.random()).substring(0,6),
             message = {action: "shot", uid: uid},
             uploadDir = cacheDir+uid+'/';
 
@@ -528,6 +528,11 @@ function LogEllapsedTime(message){
     logger(message+' in '+ellapsed_time_human);
 }
 
+// Status
+function Status(req, res, next){
+    res.render('status', _(config).extend({layout: 'main',title:'console'}));
+}
+
 // Debug
 function Debug(req, res, next) {
     console.log('Debug.');
@@ -560,6 +565,7 @@ app.get('/', Home);
 app.post('/', Home);
 
 app.get('/debug',Debug);
+app.get('/status',Status);
 
 // static public
 app.use(express.static('public'));
