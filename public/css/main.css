@@ -462,5 +462,7 @@ iframe.demo {
     color: #646464; }
   .logger .level-3 {
     color: rgba(255, 240, 195, 0.5); }
+  .logger .level-4 {
+    color: #6bff94; }
 
 /*# sourceMappingURL=main.css.map */

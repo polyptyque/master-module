@@ -28,7 +28,8 @@ var exphbs  = require('express-handlebars');
 var LOG_LEVEL_ERROR = 0,
     LOG_LEVEL_WARNING = 1,
     LOG_LEVEL_DEBUG = 2,
-    LOG_LEVEL_VERBOSE = 3;
+    LOG_LEVEL_VERBOSE = 3,
+    LOG_LEVEL_SUCCESS = 4;
 var hbs = exphbs.create({
     helpers:{
         ifvalue:function (conditional, options) {
@@ -345,7 +346,7 @@ function shot(req,res,next){
         shooting_res.send({status:'ok',uid:shot_uid});
 
         sendJsonUPD(message,'both');
-        logger('sending shot ! port : '+ UDP_ALL_IP + ':'+ UDP_PORT);
+        logger('sending shot ! port : '+ UDP_ALL_IP + ':'+ UDP_PORT, LOG_LEVEL_SUCCESS);
         shooting_timeout = setTimeout(function(){
             logger('shooting timeout '+config.shooting_timout+' ms for '+uid, LOG_LEVEL_WARNING );
             shooting_timeout = shooting = false;
