@@ -169,18 +169,17 @@ function postImage(req, res) {
     LogEllapsedTime('compute module '+modId+' upload Done.');
     res.end("ok upload done.");
     //
-    if(cm_downloaded == cm_count){
-        ArchiveShot();
-    }else{
-        DownloadShot()
-    }
+    //if(cm_downloaded == cm_count){
+    //    ArchiveShot();
+    //}else{
+    //    DownloadShot()
+    //}
 
-    //var form = new multiparty.Form();
-    /*
+    var form = new multiparty.Form();
+
     form.parse(req, function (err, fields, files) {
         res.writeHead(200, {'content-type': 'text/plain'});
         res.write('received upload from '+modId+':\n\n');
-
 
         if(!files) return logger('Upload error '+modId);
 
@@ -217,9 +216,7 @@ function postImage(req, res) {
         }
         Copy(a)
 
-
     });
-    */
 }
 
 // Post Image
