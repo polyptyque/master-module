@@ -140,7 +140,7 @@ a,button,input{
 	}
 }
 
-.shot-warning-message{
+.shot-warning-message, .display-progress{
 	display: none;
 	position: fixed;
 	width:100vw;
@@ -168,5 +168,13 @@ a,button,input{
 		strong{
 			display: none;
 		}
+	}
+	.progress{
+		position: relative;
+		width:100%;
+		left:0;
+		right:0;
+		margin: 20px auto;
+		transition: .1s all;
 	}
 }

@@ -520,7 +520,7 @@ a.red-button, button.red-button, input.red-button {
 .step-9 .step-navigation, .step-9 .reset {
   display: none; }
 
-.shot-warning-message {
+.shot-warning-message, .display-progress {
   display: none;
   position: fixed;
   width: 100vw;
@@ -530,19 +530,26 @@ a.red-button, button.red-button, input.red-button {
   background: #e53428;
   color: #FFFFFF;
   text-align: center; }
-  .shot-warning-message strong {
+  .shot-warning-message strong, .display-progress strong {
     font-size: 40px;
     display: table-cell;
     height: 100vh;
     width: 100vw;
     vertical-align: middle; }
-    .shot-warning-message strong span {
+    .shot-warning-message strong span, .display-progress strong span {
       display: block; }
-  .shot-warning-message .icon-arrow {
+  .shot-warning-message .icon-arrow, .display-progress .icon-arrow {
     font-size: 50vh;
     transform: rotate(180deg); }
-  .shot-warning-message.complete strong {
+  .shot-warning-message.complete strong, .display-progress.complete strong {
     display: none; }
+  .shot-warning-message .progress, .display-progress .progress {
+    position: relative;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: 20px auto;
+    transition: .1s all; }
 
 .home {
   text-align: center; }

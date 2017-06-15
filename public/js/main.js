@@ -46,6 +46,7 @@ jQuery(document).ready(function($){
                 }
             }
             function ResetButton(){
+                DisplayProgress();
                 button.attr('disabled',false);
                 messageWarning.hide();
                 messageWarning.removeClass('complete');
@@ -67,6 +68,7 @@ jQuery(document).ready(function($){
                         data:data
                     }
                 ).done(function(data,status){
+                    DisplayProgress();
                     setTimeout(function(){
                         ResetButton();
                     },1000);
@@ -88,6 +90,9 @@ jQuery(document).ready(function($){
                     },3000);
                     //ResetButton();
                 })
+            }
+            function DisplayProgress(){
+                $('.display-progress').show();
             }
             //
             // message d'avertissement
@@ -126,6 +131,19 @@ jQuery(document).ready(function($){
             $('#pv-'+data.modId+'-'+data.name).removeClass('loading').css({backgroundImage:'url('+data.filePath+')'})
         }
         //socket.emit('my other event', { my: 'data' });
+    });
+
+    socket.on('progress', function(data){
+        console.log('progress', data);
+        $('.display-progress .progress').css({width:data.progress+'%'});
+    });
+
+    socket.on('complete', function(data){
+        alert('complete !');
+    });
+
+    socket.on('go_home', function(data){
+        window.location.href="/"
     });
 
     function sendMessage(message){

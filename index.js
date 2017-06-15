@@ -179,6 +179,7 @@ function postImage(req, res) {
     //    DownloadShot()
     //}
 
+
     var form = new multiparty.Form();
 
     form.parse(req, function (err, fields, files) {
@@ -204,7 +205,9 @@ function postImage(req, res) {
                 }else if(name == 'a' && b){
                     Copy(b);
                 }else{
+                    //
                     cm_downloaded ++;
+                    io.emit('progress',{type:'local',progress:cm_downloaded/cm_count});
                     LogEllapsedTime('compute module '+modId+' upload Done. '+cm_downloaded+'/'+cm_count);
                     res.end("Success !"+cm_downloaded+'/'+cm_count);
                     //
@@ -288,6 +291,7 @@ function ftp_complete(req,res,next){
             reset_shooting('Upload failed:');
             return console.error('Upload failed:', err);
         }
+        io.emit('complete',{uid:shot_uid});
         LogEllapsedTime('Upload status code '+ res.statusCode);
         logger('Server response:'+ body);
     }).form(data);
@@ -297,6 +301,7 @@ function ftp_complete(req,res,next){
 function ftp_progess(req,res,next){
     res.send('thanks.');
     console.log('ftp_progess',req.body)
+    io.emit('progress',{type:'sftp',progress:req.body.percent});
     io.emit('logger',{message:JSON.stringify(req.body),level:LOG_LEVEL_VERBOSE});
 }
 
@@ -368,6 +373,10 @@ function configAction(req,res,next){
         set_camera_options(from,req,res,next)
     }else if(action == 'get_status'){
         get_status(from,req,res,next);
+    }else if(action == 'go_home'){
+        // renvoie les iPad à la page d'accueil
+        io.emit('go_home');
+        res.json({status:'ok'});
     }else if(/^display_.*$/.test(action)) {
         DisplayOverlay(action);
         res.json({display_action:'ok'});
