@@ -341,7 +341,7 @@ function warningBeforeShot(req,res,next){
 app.post('/shot',shot);
 
 // Warning (3 secondes before shot)
-app.post('/shot',warningBeforeShot);
+app.post('/warning',warningBeforeShot);
 
 
 // Configuration global post entry
