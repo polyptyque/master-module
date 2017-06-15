@@ -59,14 +59,16 @@ a,button,input{
 	display:none;
 }
 
-input[type=text]{
-	&.form-control{
-		font-size:30px;
-		padding: 40px;
-		border-radius: 80px;
-		width:80%;
-		margin: 0 auto;
-		position: relative;
+.step-form{
+	input[type=text]{
+		&.form-control{
+			font-size:30px;
+			padding: 40px;
+			border-radius: 80px;
+			width:80%;
+			margin: 0 auto;
+			position: relative;
+		}
 	}
 }
 

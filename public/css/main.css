@@ -407,14 +407,6 @@ a.red-button, button.red-button, input.red-button {
 .input-hidden {
   display: none; }
 
-input[type=text].form-control {
-  font-size: 30px;
-  padding: 40px;
-  border-radius: 80px;
-  width: 80%;
-  margin: 0 auto;
-  position: relative; }
-
 .reset {
   color: #646464; }
 
