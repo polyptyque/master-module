@@ -135,7 +135,8 @@ jQuery(document).ready(function($){
 
     socket.on('progress', function(data){
         console.log('progress', data);
-        $('.display-progress .progress').css({width:(100*data.progress)+'%'});
+        $('.display-progress .message').text('... '+data.type);
+        $('.display-progress .progress').css({width:(data.progress)+'%'});
     });
 
     socket.on('complete', function(data){

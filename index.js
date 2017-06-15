@@ -207,7 +207,7 @@ function postImage(req, res) {
                 }else{
                     //
                     cm_downloaded ++;
-                    io.emit('progress',{type:'local',progress:cm_downloaded/cm_count});
+                    io.emit('progress',{type:'local',progress:10*cm_downloaded/cm_count});
                     LogEllapsedTime('compute module '+modId+' upload Done. '+cm_downloaded+'/'+cm_count);
                     res.end("Success !"+cm_downloaded+'/'+cm_count);
                     //
