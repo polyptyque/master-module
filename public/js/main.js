@@ -58,7 +58,7 @@ jQuery(document).ready(function($){
                         data[o.name] = o.value;
                 });
                 console.log(data);
-                $('.pv').addClass('loading').css('backgroundImg',false);
+                $('.pv').addClass('loading').css('backgroundImg','none');
                 $.ajax(
                     {
                         url:'/shot',
