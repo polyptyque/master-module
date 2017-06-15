@@ -1,5 +1,6 @@
 //
 @import "variables";
+@import "icomoon";
 @import "montserrat";
 @import "bootstrap-slider/bootstrap-slider";
 @import "layout";
@@ -11,28 +12,7 @@ label.field-camera-shooter{
   display: none;
 }
 
-.shoot-button{
-  display: block;
-  //float: center;
-  clear: both;
-  padding: 40px;
-  font-size:3em;
-  margin: 40px 0;
-  width: 10em;
-  max-width:100%;
-}
 
-.shoot-button {
-  &.btn, &.btn:focus, &.btn:active {
-    outline: none;
-  }
-  & + p {
-    clear: both;
-  }
-  .choice {
-    display: block;
-  }
-}
 
 iframe.demo{
   background:#333;

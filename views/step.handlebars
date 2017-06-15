@@ -34,18 +34,37 @@
                 {{/ifvalue}}
 
                 {{#ifvalue type value="camera-shooter"}}
-                    <button class="shoot-button btn btn-main btn-danger" id="shoot-button" type="button"><i class="glyphicon glyphicon-camera"></i></button>
-                    <p>{{description}}</p>
-                    <div class="preview">
 
-                        <div class="pv" id="pv-0-a"></div>
+                    <div class="shoot-message">
+                        <p>
+                            <span class="icon icon-tabouret"></span>
+                            Réglez votre siège afin que votre visage
+                            <br>apparaisse dans l’écran devant vous.
+                            <br>Vos yeux doivent se retrouver en face de la mire.
+                        </p>
+                    </div>
 
-                        {{#for 1 9 1}}
-                            <div class="pv" id="pv-{{this}}-a"></div>
-                            <div class="pv" id="pv-{{this}}-b"></div>
-                        {{/for}}
+                    <div class="shoot-message">
+                        <p>
+                            <span class="icon icon-push-button"></span>
+                            En cliquant sur le bouton ci-dessous,
+                            <br>un compte à rebours de 3 secondes se lancera
+                            <br>et une photo sera prise.
+                        </p>
+
+                        <button class="shoot-button btn red-button" id="shoot-button" type="button">CLIQUEZ-ICI POUR LANCER <br> LE COMPTE À REBOURS</button>
 
                     </div>
+
+                    <div class="shot-warning-message">
+
+                        <strong>
+                            <span class="icon-arrow"></span>
+                        </strong>
+
+                    </div>
+
+
                 {{/ifvalue}}
 
             </fieldset>
@@ -53,7 +72,7 @@
         {{/each}}
         <!-- <hr /> -->
 
-        <div class="form-group clearfix">
+        <div class="form-group clearfix step-navigation">
         {{#if prevStep}}
             <button id="btn-back" data-action="{{prevStepAction}}" type="submit" class="btn red-button pull-left">étape précédente</button>
         {{/if}}

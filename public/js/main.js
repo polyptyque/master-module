@@ -21,42 +21,42 @@ jQuery(document).ready(function($){
     });
 
     if(form_autosubmit){
-        $('input:radio').change(function(){
+        function AutoSubmit(){
             setTimeout(function(){
                 stepForm.submit();
             },1000);
-        })
+        }
+        $('input:radio')
+            .on('change',AutoSubmit)
+            .on('click',AutoSubmit);
     }
 
     $('.shoot-button').click(function(){
-        var button = $(this);
+        var button = $(this), messageWarning = $('.shot-warning-message');
         if(!button.is(':disabled')){
             button.attr('disabled',true);
-            var i = 3;
+            messageWarning.show();
+            var i = 4;
             function Timeout(){
                 if(i == 0){
                     Complete();
                 }else{
-                    button.text(i);
                     i--;
                     setTimeout(Timeout,1000);
                 }
             }
             function ResetButton(){
                 button.attr('disabled',false);
-                button.html('<i class="glyphicon glyphicon-camera"></i>')
-                button.addClass('btn-danger')
-                      .removeClass('btn-warning')
+                messageWarning.hide();
+                messageWarning.removeClass('complete');
             }
             function Complete(){
-                button.html('<i class="glyphicon glyphicon-flash"></i>');
-                button.removeClass('btn-danger')
-                    .addClass('btn-warning');
                 var data = {};
                     _(stepForm.serializeArray()).each(function(o){
                         console.log(o);
                         data[o.name] = o.value;
                 });
+                messageWarning.addClass('complete');
                 console.log(data);
                 $('.pv').addClass('loading').css('backgroundImg','none');
                 $.ajax(
