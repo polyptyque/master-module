@@ -3,13 +3,16 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 //
+process.chdir(__dirname);
+//
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 //
-var config = require('./config.json');
-var secret = require('./secret.json');
+var baseDir = __dirname+'/',
+    config = require(baseDir+'config.json'),
+    secret = require(baseDir+'secret.json');
 var sha1 = require('sha1');
 var format = require('date-format');
 //
@@ -110,7 +113,7 @@ const HTTP_PORT=config.HTTP_PORT;
 const UDP_PORT=config.UDP_PORT;
 const UDP_ALL_IP = '255.255.255.255';
 
-var cacheDir = 'cache/';
+var cacheDir = baseDir+'cache/';
 if (!fs.existsSync(cacheDir)){
     fs.mkdirSync(cacheDir);
     fs.chmodSync(cacheDir,755);
