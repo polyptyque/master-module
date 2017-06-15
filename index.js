@@ -369,10 +369,7 @@ function configAction(req,res,next){
     }else if(action == 'get_status'){
         get_status(from,req,res,next);
     }else if(/^display_.*$/.test(action)) {
-        // display action
-        var displayMessage = JSON.stringify({action:action});
-        client.send(displayMessage, 0, displayMessage.length, UDP_PORT, 'localhost');
-        logger('Affichage > '+action)
+        DisplayOverlay(action);
         res.json({display_action:'ok'});
     }else if(action == 'reset_shooting'){
         shooting = false;
@@ -387,6 +384,13 @@ function DefaultConfigAction(action,req,res){
     sendJsonUPD({action:action});
     res.json({status:'ok',action:action});
     logger('config action : '+action);
+}
+
+function DisplayOverlay(displayAction){
+    // display action
+    var displayMessage = JSON.stringify({action:action});
+    client.send(displayMessage, 0, displayMessage.length, UDP_PORT, 'localhost');
+    logger('Affichage > '+action, LOG_LEVEL_VERBOSE);
 }
 
 var get_camera_options_timeout = false,
@@ -471,12 +475,11 @@ app.use('/step-:step', function (req, res, next) {
 
     if(!stepConfig) return next();
 
-    var display = 'display_home';
+    var displayAction = 'display_home';
     if(step==9){
-        display = 'display_mire';
+        displayAction = 'display_mire';
     }
-    var displayMessage = JSON.stringify({action:display});
-    client.send(displayMessage, 0, displayMessage.length, UDP_PORT, 'localhost');
+    DisplayOverlay(displayAction);
 
     stepConfig.fields.forEach(function(field){
 
