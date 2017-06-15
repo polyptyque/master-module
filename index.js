@@ -201,7 +201,7 @@ function postImage(req, res) {
                     Copy(b);
                 }else{
                     cm_downloaded ++;
-                    LogEllapsedTime('compute module '+modId+' upload Done.');
+                    LogEllapsedTime('compute module '+modId+' upload Done. '+cm_downloaded+'/'+cm_count);
                     res.end(util.inspect({fields: fields, files: files}));
                     //
                     if(cm_downloaded == cm_count){
