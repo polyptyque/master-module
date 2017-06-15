@@ -250,34 +250,6 @@ function ArchiveShot(){
     var shotDirPath = cacheDir+shot_uid,
         shotArchivePath = shotDirPath+'.tar.gz';
     //
-
-    /*
-    function UploadToWebServer(err){
-
-        if(err) return console.log(err);
-
-        LogEllapsedTime('All images successfully downloaded & archived');
-
-        logger(shotArchivePath+' -> '+(fs.statSync(shotArchivePath).size/1000000)+'mb');
-
-        var req = request.post('http://polyptyque.photo/upload', function (err, res, body) {
-            if (err) {
-                return console.error('Upload failed:', err);
-            }
-            LogEllapsedTime('Upload successful! ellapsed time');
-            logger('Upload successful!  Server responded with:'+ body);
-        });
-        progress(req).on('progress',function(state){
-            logger('%s% speed : %s',state.percent,state.speed/1024)
-        });
-        var form = req.form(),
-            form_response = {};
-        form.append('uid',shot_uid);
-        form.append('form_responses',JSON.stringify(shooting_responses));
-        form.append('signature',sha1(secret.private_key+shot_uid));
-        form.append('archive', fs.createReadStream(shotArchivePath));
-    }
-    */
     //
     function UploadSFTP(){
         var shotArchivePathAbsolute = path.resolve(shotArchivePath);
@@ -317,6 +289,10 @@ function ftp_progess(req,res,next){
     io.emit('logger',{message:JSON.stringify(req.body),level:LOG_LEVEL_VERBOSE});
 }
 
+// FTP UPLOAD COMPLETE
+app.post('/ftp_complete',ftp_complete);
+app.post('/ftp_progess',ftp_progess);
+
 // Ask camera shot from web interface
 function shot(req,res,next){
     if(!shooting) {
@@ -353,12 +329,18 @@ function shot(req,res,next){
     }
 }
 
-// FTP UPLOAD COMPLETE
-app.post('/ftp_complete',ftp_complete);
-app.post('/ftp_progess',ftp_progess);
+function warningBeforeShot(){
+    // envoie un message avant de prendre la photo
+    var messageStr = JSON.stringify({'action':'warning'});
+    client.send(messageStr, 0, messageStr.length, UDP_PORT, 'localhost');
+    logger("Attention... une photo va être prise dans 3 secondes",LOG_LEVEL_WARNING);
+}
 
 // Shot
 app.post('/shot',shot);
+
+// Warning (3 secondes before shot)
+app.post('/shot',warningBeforeShot);
 
 
 // Configuration global post entry

@@ -16,6 +16,7 @@
   "steps":[
     {
       "topic":"Qui êtes vous ?",
+      "autosubmit":false,
       "fields":[
         {
           "id":"firstname",
@@ -38,6 +39,7 @@
     },
      {
       "topic":"Quelle proposition vous définie le mieux ?",
+      "autosubmit":true,
       "fields":[
         {
           "id":"temper",
@@ -65,6 +67,7 @@
     },
     {
       "topic":"Quelle est votre plus grande défaut ?",
+      "autosubmit":true,
       "fields":[
         {
           "id":"quality",
@@ -92,6 +95,7 @@
     },
     {
       "topic":"Quelle est votre occupation préférée ?",
+      "autosubmit":true,
       "fields":[
         {
           "id":"hobby",
@@ -119,6 +123,7 @@
     },
     {
       "topic":"Vous préférez ?",
+      "autosubmit":true,
       "fields":[
         {
           "id":"prefer",
@@ -146,6 +151,7 @@
     },
     {
       "topic":"Quel serait le métier de vos rêves ?",
+      "autosubmit":true,
       "fields":[
         {
           "id":"job",
@@ -173,6 +179,7 @@
     },
     {
       "topic":"Que feriez-vous pour de l’argent ?",
+      "autosubmit":true,
       "fields":[
         {
           "id":"money",
@@ -200,6 +207,7 @@
     },
     {
       "topic":"Qui était Monsieur Lenain de Tillemont ?",
+      "autosubmit":true,
       "fields":[
         {
           "id":"lenaintillemon",
@@ -227,6 +235,7 @@
     },
     {
       "topic":"Que veut dire l’expression « être un narvalo » ?",
+      "autosubmit":true,
       "fields":[
         {
           "id":"narvalo",
@@ -254,6 +263,7 @@
     },
     {
       "topic":"Prise de vue",
+      "autosubmit":false,
       "fields":[
         {
           "id":"camera",

@@ -1,9 +1,13 @@
 
-.red-button{
- 	padding: 10px 40px; 
- 	background: $red;
- 	border-radius: 25px;
- 	margin-top: 50px;
+a,button,input{
+	&.red-button {
+		padding: 10px 40px;
+		background: $red;
+		border-radius: 25px;
+		margin-top: 50px;
+		color: #fff;
+		text-decoration: none;
+	}
 }
 
 .h1{
@@ -39,10 +43,11 @@
 
 .choice{
 	background:$white;
-	border-radius: 25px;
+	border-radius: 40px;
  	margin-top: 20px;
 	width:80%;
- 	padding: 10px 0px; 
+ 	padding: 20px 0px;
+	font-size: 1.25em;
 	text-transform:uppercase;
 	.input-hidden:checked + & {
 		background:$red;
@@ -54,6 +59,17 @@
 	display:none;
 }
 
+input[type=text]{
+	&.form-control{
+		font-size:30px;
+		padding: 40px;
+		border-radius: 80px;
+		width:80%;
+		margin: 0 auto;
+		position: relative;
+	}
+}
+
 .reset{
 	color:$grey;
 }
@@ -61,4 +77,25 @@
 .horizontal-line{
 	border-top: 1px solid $grey;
 	width:90%;
+}
+
+.form-progress{
+	position: fixed;
+	bottom: 0;
+	left:0;
+	width:100%;
+	height:40px;
+	background: #fff;
+	.progress-bar{
+		float: left;
+		position: absolute;
+		height:100%;
+		width:1%;
+		background: $red;
+		@for $step from 1 to 11{
+			&.step-#{$step}{
+				width:percentage($step/11);
+			}
+		}
+	}
 }

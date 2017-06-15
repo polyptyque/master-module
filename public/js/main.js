@@ -20,6 +20,14 @@ jQuery(document).ready(function($){
         }
     });
 
+    if(form_autosubmit){
+        $('input:radio').change(function(){
+            setTimeout(function(){
+                stepForm.submit();
+            },1000);
+        })
+    }
+
     $('.shoot-button').click(function(){
         var button = $(this);
         if(!button.is(':disabled')){
@@ -31,7 +39,7 @@ jQuery(document).ready(function($){
                 }else{
                     button.text(i);
                     i--;
-                    setTimeout(Timeout,200);
+                    setTimeout(Timeout,1000);
                 }
             }
             function ResetButton(){
@@ -81,7 +89,19 @@ jQuery(document).ready(function($){
                     //ResetButton();
                 })
             }
-            Timeout();
+            //
+            // message d'avertissement
+            //
+            $.ajax(
+                {
+                    url:'/warning',
+                    method:'post',
+                    dataType:'json',
+                    data:data
+                }
+            ).done(function(){
+                Timeout();
+            })
         }
     });
 
@@ -100,7 +120,7 @@ jQuery(document).ready(function($){
         }
     });
 
-    var socket = io.connect('http://'+location.hostname+':'+HTTP_PORT);
+    var socket = io.connect('http://'+location.hostname+':'+location.port);
     socket.on('postImage', function (data) {
         console.log(data,shotUid);
         if(data.shotUid == shotUid){
@@ -173,9 +193,10 @@ jQuery(document).ready(function($){
     // status
     var logger = $('#logger');
     socket.on('logger', function(data){
-        console.log("logger",data);
-        logger.append("<div class='level-"+data.level+"'>"+data.message+"</div>");
-        logger.scrollTop(logger[0].scrollHeight);
+        if(logger[0]){
+            logger.append("<div class='level-"+data.level+"'>"+data.message+"</div>");
+            logger.scrollTop(logger[0].scrollHeight);
+        }
         //$('.'+data.from).addClass('ok');
     });
 

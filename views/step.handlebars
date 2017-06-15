@@ -57,12 +57,23 @@
         {{#if prevStep}}
             <button id="btn-back" data-action="{{prevStepAction}}" type="submit" class="btn red-button pull-left">étape précédente</button>
         {{/if}}
+            <script>
+
+                var form_autosubmit = {{autosubmit}};
+
+            </script>
         {{#if nextStep}}
-            <input class="btn red-button pull-right" type="submit" value="étape suivante" >
+            {{#if autosubmit}}
+                <!-- nothing -->
+            {{else}}
+                <input class="btn red-button pull-right" type="submit" value="étape suivante" >
+            {{/if}}
         {{/if}}
         </div>
     </form>
 
     <!-- <hr /> -->
     <a class="reset" href="/">Recommencer depuis le début.</a>
+
+    <div class="form-progress"><div class="progress-bar step-{{stepNumber}}"></div></div>
 </div>

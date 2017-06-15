@@ -1,0 +1,56 @@
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 100;
+  font-style: normal;
+  src: url("Light/Montserrat-ExtraLight.eot");
+  src: url("Light/Montserrat-ExtraLight.eot?#iefix") format("embedded-opentype"), url("Light/Montserrat-ExtraLight.woff") format("woff"), url("Light/Montserrat-ExtraLight.woff2") format("woff2"), url("Light/Montserrat-ExtraLight.ttf") format("truetype"), url("Light/Montserrat-ExtraLight.svg#MontserratExtraLight") format("svg"); }
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 200;
+  font-style: normal;
+  src: url("Light/Montserrat-Thin.eot");
+  src: url("Light/Montserrat-Thin.eot?#iefix") format("embedded-opentype"), url("Light/Montserrat-Thin.woff") format("woff"), url("Light/Montserrat-Thin.woff2") format("woff2"), url("Light/Montserrat-Thin.ttf") format("truetype"), url("Light/Montserrat-Thin.svg#MontserratThin") format("svg"); }
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 300;
+  font-style: normal;
+  src: url("Light/Montserrat-Light.eot");
+  src: url("Light/Montserrat-Light.eot?#iefix") format("embedded-opentype"), url("Light/Montserrat-Light.woff") format("woff"), url("Light/Montserrat-Light.woff2") format("woff2"), url("Light/Montserrat-Light.ttf") format("truetype"), url("Light/Montserrat-Light.svg#MontserratLight") format("svg"); }
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 400;
+  font-style: normal;
+  src: url("Regular/Montserrat-Medium.eot");
+  src: url("Regular/Montserrat-Medium.eot?#iefix") format("embedded-opentype"), url("Regular/Montserrat-Medium.woff") format("woff"), url("Regular/Montserrat-Medium.woff2") format("woff2"), url("Regular/Montserrat-Medium.ttf") format("truetype"), url("Regular/Montserrat-Medium.svg#MontserratMedium") format("svg"); }
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-style: normal;
+  src: url("Regular/Montserrat-Regular.eot");
+  src: url("Regular/Montserrat-Regular.eot?#iefix") format("embedded-opentype"), url("Regular/Montserrat-Regular.woff") format("woff"), url("Regular/Montserrat-Regular.woff2") format("woff2"), url("Regular/Montserrat-Regular.ttf") format("truetype"), url("Regular/Montserrat-Regular.svg#MontserratRegular") format("svg"); }
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 600;
+  font-style: normal;
+  src: url("SemiBold/Montserrat-SemiBold.eot");
+  src: url("SemiBold/Montserrat-SemiBold.eot?#iefix") format("embedded-opentype"), url("SemiBold/Montserrat-SemiBold.woff") format("woff"), url("SemiBold/Montserrat-SemiBold.woff2") format("woff2"), url("SemiBold/Montserrat-SemiBold.ttf") format("truetype"), url("SemiBold/Montserrat-SemiBold.svg#MontserratSemiBold") format("svg"); }
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 700;
+  font-style: normal;
+  src: url("Bold/Montserrat-Bold.eot");
+  src: url("Bold/Montserrat-Bold.eot?#iefix") format("embedded-opentype"), url("Bold/Montserrat-Bold.woff") format("woff"), url("Bold/Montserrat-Bold.woff2") format("woff2"), url("Bold/Montserrat-Bold.ttf") format("truetype"), url("Bold/Montserrat-Bold.svg#MontserratBold") format("svg"); }
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 800;
+  font-style: normal;
+  src: url("ExtraBold/Montserrat-ExtraBold.eot");
+  src: url("ExtraBold/Montserrat-ExtraBold.eot?#iefix") format("embedded-opentype"), url("ExtraBold/Montserrat-ExtraBold.woff") format("woff"), url("ExtraBold/Montserrat-ExtraBold.woff2") format("woff2"), url("ExtraBold/Montserrat-ExtraBold.ttf") format("truetype"), url("ExtraBold/Montserrat-ExtraBold.svg#MontserratExtraBold") format("svg"); }
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 900;
+  font-style: normal;
+  src: url("ExtraBold/Montserrat-Black.eot");
+  src: url("ExtraBold/Montserrat-Black.eot?#iefix") format("embedded-opentype"), url("ExtraBold/Montserrat-Black.woff") format("woff"), url("ExtraBold/Montserrat-Black.woff2") format("woff2"), url("ExtraBold/Montserrat-Black.ttf") format("truetype"), url("ExtraBold/Montserrat-Black.svg#MontserratBlack") format("svg"); }
+
+/*# sourceMappingURL=montserrat.css.map */
