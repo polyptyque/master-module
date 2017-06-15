@@ -189,7 +189,7 @@ function postImage(req, res) {
             var name = from.fieldName,
                 cam_abs_name = modId+'-'+name,
                 position = 1+_(camera_mapping).indexOf(cam_abs_name)
-            var filePath = uploadDir+position+'-'+cam_abs_name+'.jpg';
+            var filePath = uploadDir+position+'.jpg';
             //console.log('Copy '+name+'.',filePath);
             fs.copy(from.path,filePath,{replace:true},function(err){
                 // envoie un message via socket.io
