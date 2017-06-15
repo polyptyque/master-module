@@ -188,7 +188,7 @@ function postImage(req, res) {
         function Copy(from){
             var name = from.fieldName,
                 cam_abs_name = modId+'-'+name,
-                position = 1+_(camera_mapping).indexOf(cam_abs_name)
+                position = _(camera_mapping).indexOf(cam_abs_name)
             var filePath = uploadDir+position+'.jpg';
             //console.log('Copy '+name+'.',filePath);
             fs.copy(from.path,filePath,{replace:true},function(err){
