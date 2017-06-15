@@ -165,7 +165,7 @@ function postImage(req, res) {
     LogEllapsedTime('Images are posted... '+modId);
     //console.log(headers);
 
-    cm_downloaded ++;
+    // cm_downloaded ++;
     //LogEllapsedTime('compute module '+modId+' upload Done.');
     //res.end("ok upload done.");
     //
