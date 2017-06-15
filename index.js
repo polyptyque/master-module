@@ -260,6 +260,10 @@ function ArchiveShot(){
         logger('Upload sftp '+shotArchivePathAbsolute+' -> '+Math.round(fs.statSync(shotArchivePathAbsolute).size/1000)+'kb');
         var message = JSON.stringify({action:"transfert_sftp",options:{filepath:shotArchivePathAbsolute, uid:shot_uid}});
         client.send(message, 0, message.length, UDP_PORT, 'localhost');
+
+        shooting_timeout = setTimeout(function(){
+            reset_shooting('UploadSFTP timeout fail');
+        }, config.ftp_transfert_timeout);
     }
     //
     targz().compress(shotDirPath,shotArchivePath,UploadSFTP)
@@ -268,6 +272,8 @@ function ArchiveShot(){
 
 function ftp_complete(req,res,next){
     res.send('Thank you for FTP transfert.');
+    if(shooting_timeout) clearTimeout(shooting_timeout);
+
     var url = 'http://polyptyque.photo/upload',
         data =  {
             uid: shot_uid,
@@ -279,6 +285,7 @@ function ftp_complete(req,res,next){
     console.log(data);
     request.post(url,function (err, res, body) {
         if (err) {
+            reset_shooting('Upload failed:');
             return console.error('Upload failed:', err);
         }
         LogEllapsedTime('Upload status code '+ res.statusCode);
@@ -322,15 +329,18 @@ function shot(req,res,next){
         sendJsonUPD(message,'both');
         logger('sending shot ! port : '+ UDP_ALL_IP + ':'+ UDP_PORT, LOG_LEVEL_SUCCESS);
         shooting_timeout = setTimeout(function(){
-            logger('shooting timeout '+config.shooting_timout+' ms for '+uid, LOG_LEVEL_WARNING );
-            shooting_timeout = shooting = false;
-            sendJsonUPD({action:'reset_shooting'});
-            //res.status(200).json({status: 'fail', error:'timeout', uid: message.uid});
+            reset_shooting('shot timeout');
         },config.shooting_timout);
 
     }else{
         res.status(200).json({status: 'fail', error:'buzzy'});
     }
+}
+
+function reset_shooting(cause){
+    shooting_timeout = shooting = false;
+    sendJsonUPD({action:'reset_shooting'});
+    logger('reset_shooting : '+cause, LOG_LEVEL_ERROR );
 }
 
 function warningBeforeShot(req,res,next){
@@ -358,6 +368,12 @@ function configAction(req,res,next){
         set_camera_options(from,req,res,next)
     }else if(action == 'get_status'){
         get_status(from,req,res,next);
+    }else if(/^display_.*$/.test(action)) {
+        // display action
+        var displayMessage = JSON.stringify({action:action});
+        client.send(displayMessage, 0, displayMessage.length, UDP_PORT, 'localhost');
+        logger('Affichage > '+action)
+        res.json({display_action:'ok'});
     }else if(action == 'reset_shooting'){
         shooting = false;
         logger('reset shooting',LOG_LEVEL_WARNING)
@@ -454,6 +470,13 @@ app.use('/step-:step', function (req, res, next) {
     var stepConfig = config.steps[step];
 
     if(!stepConfig) return next();
+
+    var display = 'display_home';
+    if(step==9){
+        display = 'display_mire';
+    }
+    var displayMessage = JSON.stringify({action:display});
+    client.send(displayMessage, 0, displayMessage.length, UDP_PORT, 'localhost');
 
     stepConfig.fields.forEach(function(field){
 
