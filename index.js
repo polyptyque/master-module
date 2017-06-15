@@ -236,8 +236,8 @@ function AllImagesShooted(){
 function DownloadShot(){
     var message = {action:'send_images',uid:shot_uid},
         messageStr = JSON.stringify(message),
-        ip = cm_ips.pop();
-    logger('DownloadShot '+ip);
+        ip = config.modules_hosts[cm_downloaded];
+    logger('DownloadShot on '+ip+' | '+cm_downloaded+'/'+cm_count);
     //_(cm_ips).each(function(ip){
         client.send(messageStr, 0, messageStr.length, UDP_PORT, ip);
     //});
