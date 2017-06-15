@@ -388,9 +388,9 @@ function DefaultConfigAction(action,req,res){
 
 function DisplayOverlay(displayAction){
     // display action
-    var displayMessage = JSON.stringify({action:action});
+    var displayMessage = JSON.stringify({action:displayAction});
     client.send(displayMessage, 0, displayMessage.length, UDP_PORT, 'localhost');
-    logger('Affichage > '+action, LOG_LEVEL_VERBOSE);
+    logger('Affichage > '+displayAction, LOG_LEVEL_VERBOSE);
 }
 
 var get_camera_options_timeout = false,
