@@ -329,11 +329,12 @@ function shot(req,res,next){
     }
 }
 
-function warningBeforeShot(){
+function warningBeforeShot(req,res,next){
     // envoie un message avant de prendre la photo
     var messageStr = JSON.stringify({'action':'warning'});
     client.send(messageStr, 0, messageStr.length, UDP_PORT, 'localhost');
     logger("Attention... une photo va être prise dans 3 secondes",LOG_LEVEL_WARNING);
+    res.json({status:'ok'});
 }
 
 // Shot
