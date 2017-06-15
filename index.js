@@ -166,8 +166,8 @@ function postImage(req, res) {
     //console.log(headers);
 
     cm_downloaded ++;
-    LogEllapsedTime('compute module '+modId+' upload Done.');
-    res.end("ok upload done.");
+    //LogEllapsedTime('compute module '+modId+' upload Done.');
+    //res.end("ok upload done.");
     //
     //if(cm_downloaded == cm_count){
     //    ArchiveShot();
@@ -202,7 +202,7 @@ function postImage(req, res) {
                 }else{
                     cm_downloaded ++;
                     LogEllapsedTime('compute module '+modId+' upload Done. '+cm_downloaded+'/'+cm_count);
-                    res.end(util.inspect({fields: fields, files: files}));
+                    res.end("Success !"+cm_downloaded+'/'+cm_count);
                     //
                     if(cm_downloaded == cm_count){
                         ArchiveShot();
