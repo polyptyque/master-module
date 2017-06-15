@@ -96,8 +96,7 @@ jQuery(document).ready(function($){
                 {
                     url:'/warning',
                     method:'post',
-                    dataType:'json',
-                    data:data
+                    dataType:'json'
                 }
             ).done(function(){
                 Timeout();
