@@ -353,6 +353,7 @@ function warningBeforeShot(req,res,next){
     var messageStr = JSON.stringify({'action':'warning'});
     client.send(messageStr, 0, messageStr.length, UDP_PORT, 'localhost');
     logger("Attention... une photo va être prise dans 3 secondes",LOG_LEVEL_WARNING);
+    reset_shooting('warning');
     res.json({status:'ok'});
 }
 
