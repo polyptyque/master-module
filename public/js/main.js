@@ -134,24 +134,34 @@ jQuery(document).ready(function($){
     });
 
     socket.on('progress', function(data){
-        var p = data.type == 'local' ? data.progress / 10 : data.progress*.9 + 10;
+        var p = data.type == 'local' ? data.progress *10 : data.progress*.9 + 10;
         console.log('progress', data, p);
         if(__debug__) return;
-        $('.display-progress .message').text('... '+data.type+' -> '+p+'%');
         $('.display-progress .progress').css({width:p+'%'});
     });
 
     socket.on('complete', function(data){
         if(__debug__) return;
+
+        var shortUid = /^[0-9]{6}-[0-9]{6}-([abcdef0-9]{6})$/.exec(data.uid)[1];
+        var url = 'http://polyptyque.photo/'+shortUid;
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: url,
+            width: 128,
+            height: 128,
+            colorDark : "#e53428", // red
+            colorLight : "rgba(0,0,0,0)",
+            correctLevel : QRCode.CorrectLevel.L
+        });
+
         $('.step-final.resume').show();
         $('.progress-bar').css({width:'100%'});
         if(data.user_email){
-            $('.resume .user_email').text('http://polyptyque.photo/'+data.user_email);
+            $('.resume .user_email').text(data.user_email);
         }else{
             $('.resume .email').hide();
         }
-        var shortUid = /^[0-9]{6}-[0-9]{6}-([abcdef0-9]{6})$/.exec(data.uid)[1];
-        $('.resume .web_link').text('http://polyptyque.photo/'+shortUid);
+        $('.resume .web_link').text(url);
 
         setTimeout(function(){
            location.href = '/';
