@@ -543,6 +543,9 @@ app.use('/step-:step', function (req, res, next) {
 
     options = _(options).extend(stepConfig);
     res.render('step', options);
+
+    Logger('Étape '+stepNumber+'/'+totalStep+' : '+stepConfig.topic,LOG_LEVEL_SUCCESS);
+
 });
 
 function LogEllapsedTime(message){
