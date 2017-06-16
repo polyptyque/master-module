@@ -124,6 +124,10 @@ jQuery(document).ready(function($){
         }
     });
 
+    $('.step-9 .close').click(function(){
+        location.href='/';
+    })
+
     var socket = io.connect('http://'+location.hostname+':'+location.port);
     socket.on('postImage', function (data) {
         console.log(data,shotUid);

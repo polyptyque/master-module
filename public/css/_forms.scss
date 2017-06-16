@@ -206,7 +206,15 @@ a,button,input{
 .resume{
 	background: $beige;
 	color:$grey;
-	//display: block;
+	display: block;
+	.close{
+		position: fixed;
+		right:0;
+		top:0;
+		padding: 20px;
+		font-size: 40px;
+		color:$red;
+	}
 	p{
 		margin: 4em 0;
 	}
