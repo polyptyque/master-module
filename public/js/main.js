@@ -149,6 +149,10 @@ jQuery(document).ready(function($){
         }
         var shortUid = /^[0-9]{6}-[0-9]{6}-([abcdef0-9]{6})$/.exec(data.uid)[1];
         $('.resume .web_link').text('http://polyptyque.photo/'+shortUid);
+
+        setTimeout(function(){
+           location.href = '/';
+        }, 2 * 60 * 1000);
     });
 
     socket.on('go_home', function(data){
