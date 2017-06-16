@@ -557,8 +557,7 @@ a.red-button, button.red-button, input.red-button {
 
 .resume {
   background: #fff0c3;
-  color: #646464;
-  display: block; }
+  color: #646464; }
   .resume p {
     margin: 4em 0; }
   .resume .user_email, .resume .web_link, .resume a {
