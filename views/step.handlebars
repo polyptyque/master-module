@@ -17,11 +17,11 @@
                 <label for="field-{{id}}" class="field-{{type}}">{{label}}</label>
 
                 {{#ifvalue type value="text"}}
-                <input id="field-{{id}}" name="{{id}}" type="text" placeholder="{{placeholder}}" class="form-control" value="{{response}}" />
+                <input id="field-{{id}}" name="{{id}}" type="text" placeholder="{{placeholder}}" class="form-control" value="{{response}}" autocomplete="off" />
                 {{/ifvalue}}
 
                 {{#ifvalue type value="email"}}
-                <input id="field-{{id}}" name="{{id}}" type="email" placeholder="{{placeholder}}" class="form-control" value="{{response}}" />
+                <input id="field-{{id}}" name="{{id}}" type="email" placeholder="{{placeholder}}" class="form-control" value="{{response}}" autocomplete="off" />
                 {{/ifvalue}}
 
                 {{#ifvalue type value="textarea"}}
