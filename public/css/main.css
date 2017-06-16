@@ -439,11 +439,9 @@ a.red-button, button.red-button, input.red-button {
   padding: 20px 0px;
   font-size: 1.25em;
   text-transform: uppercase; }
-  .choice .input-hidden:checked + .choice .input-hidden {
+  .input-hidden:checked + .choice {
     background: #e53428;
     color: #FFFFFF; }
-    .choice .input-hidden:checked + .choice .input-hidden:active {
-      background: #646464; }
 
 .step-navigation {
   text-align: center; }
@@ -566,8 +564,7 @@ a.red-button, button.red-button, input.red-button {
 
 .resume {
   background: #fff0c3;
-  color: #646464;
-  display: block; }
+  color: #646464; }
   .resume .close {
     position: fixed;
     right: 0;

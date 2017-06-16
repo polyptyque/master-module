@@ -52,15 +52,9 @@ a,button,input{
  	padding: 20px 0px;
 	font-size: 1.25em;
 	text-transform:uppercase;
-	.input-hidden {
-		&:checked + & {
-			background:$red;
-			color:$white;
-			&:active{
-				background: $grey;
-			}
-		}
-
+	.input-hidden:checked + & {
+		background:$red;
+		color:$white;
 	}
 }
 
@@ -206,7 +200,7 @@ a,button,input{
 .resume{
 	background: $beige;
 	color:$grey;
-	display: block;
+	//display: block;
 	.close{
 		position: fixed;
 		right:0;
