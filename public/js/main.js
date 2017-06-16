@@ -124,8 +124,10 @@ jQuery(document).ready(function($){
         }
     });
 
-    $('.step-9 .close').click(function(){
+    $('.step-9 .close').click(function(e){
         location.href='/';
+        e.preventDefault();
+        e.stopPropagation();
     })
 
     var socket = io.connect('http://'+location.hostname+':'+location.port);
