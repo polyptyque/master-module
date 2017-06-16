@@ -124,7 +124,7 @@
 
         <div class="form-group clearfix step-navigation">
         {{#if prevStep}}
-            <button id="btn-back" data-action="{{prevStepAction}}" type="submit" class="btn red-button pull-left">étape précédente</button>
+            <button id="btn-back" data-action="{{prevStepAction}}" type="submit" class="btn red-button">étape précédente</button>
         {{/if}}
             <script>
 
@@ -136,14 +136,17 @@
             {{#if autosubmit}}
                 <!-- nothing -->
             {{else}}
-                <input class="btn red-button pull-right" type="submit" value="étape suivante" >
+                <button class="btn red-button" type="submit">
+                    étape suivante
+                </button>
             {{/if}}
         {{/if}}
+            <br>
+            <a class="reset" href="/">Recommencer depuis le début.</a>
         </div>
     </form>
 
     <!-- <hr /> -->
-    <a class="reset" href="/">Recommencer depuis le début.</a>
 
     <div class="form-progress"><div class="progress-bar step-{{stepNumber}}"></div></div>
 </div>

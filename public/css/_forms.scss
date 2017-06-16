@@ -7,6 +7,9 @@ a,button,input{
 		margin-top: 50px;
 		color: #fff;
 		text-decoration: none;
+		&,&:focus,&:active{
+			outline: none;
+		}
 	}
 }
 
@@ -49,13 +52,20 @@ a,button,input{
  	padding: 20px 0px;
 	font-size: 1.25em;
 	text-transform:uppercase;
-	.input-hidden:checked + & {
-		background:$red;
-		color:$white;
-		&:hover{
-			background: $grey;
+	.input-hidden {
+		&:checked + & {
+			background:$red;
+			color:$white;
+			&:active{
+				background: $grey;
+			}
 		}
+
 	}
+}
+
+.step-navigation{
+	text-align: center;
 }
 
 .input-hidden{
@@ -77,6 +87,8 @@ a,button,input{
 
 .reset{
 	color:$grey;
+	margin: 60px 0 0 ;
+	display: inline-block;
 }
 
 .horizontal-line{
