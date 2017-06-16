@@ -291,7 +291,7 @@ function ftp_complete(req,res,next){
             reset_shooting('Upload failed:');
             return console.error('Upload failed:', err);
         }
-        io.emit('complete',{uid:shot_uid,user_email:shooting_responses.user_email});
+        io.emit('complete',{uid:shot_uid,user_email:shooting_responses.email});
         LogEllapsedTime('Upload status code '+ res.statusCode);
         logger('Server response:'+ body);
     }).form(data);

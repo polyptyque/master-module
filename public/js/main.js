@@ -142,8 +142,13 @@ jQuery(document).ready(function($){
     socket.on('complete', function(data){
         $('.step-final.resume').show();
         $('.progress-bar').css({width:'100%'});
-        $('.resume .user_email').text('http://polyptyque.photo/'+data.user_email);
-        $('.resume .web_link').text('http://polyptyque.photo/'+data.uid);
+        if(data.user_email){
+            $('.resume .user_email').text('http://polyptyque.photo/'+data.user_email);
+        }else{
+            $('.resume .email').hide();
+        }
+        var shortUid = /^[0-9]{6}-[0-9]{6}-([abcdef0-9]{6})$/.exec(data.uid)[1];
+        $('.resume .web_link').text('http://polyptyque.photo/'+shortUid);
     });
 
     socket.on('go_home', function(data){
