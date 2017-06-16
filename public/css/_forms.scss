@@ -53,6 +53,9 @@ a,button,input{
 		background:$red;
 		color:$white;
 	}
+	&:hover{
+		background: $grey;
+	}
 }
 
 .input-hidden{
