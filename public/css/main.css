@@ -520,7 +520,7 @@ a.red-button, button.red-button, input.red-button {
 .step-9 .step-navigation, .step-9 .reset {
   display: none; }
 
-.shot-warning-message, .display-progress {
+.step-final {
   display: none;
   position: fixed;
   width: 100vw;
@@ -530,25 +530,44 @@ a.red-button, button.red-button, input.red-button {
   background: #e53428;
   color: #FFFFFF;
   text-align: center; }
-  .shot-warning-message strong, .display-progress strong {
+  .step-final strong, .step-final .strong {
     font-size: 40px;
     display: table-cell;
     height: 100vh;
     width: 100vw;
     vertical-align: middle; }
-    .shot-warning-message strong span, .display-progress strong span {
+    .step-final strong span, .step-final .strong span {
       display: block; }
-  .shot-warning-message .icon-arrow, .display-progress .icon-arrow {
-    font-size: 50vh;
-    transform: rotate(180deg); }
-  .shot-warning-message.complete strong, .display-progress.complete strong {
-    display: none; }
-  .shot-warning-message .progress, .display-progress .progress {
-    position: relative;
-    width: 100%;
-    left: 0;
-    margin: 20px auto;
-    transition: .1s all; }
+
+.shot-warning-message .icon-arrow {
+  font-size: 50vh;
+  transform: rotate(180deg); }
+.shot-warning-message.complete strong {
+  display: none; }
+
+.display-progress .progress {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  left: 0;
+  margin: 50px auto;
+  transition: .1s all;
+  border-radius: 0; }
+
+.resume {
+  background: #fff0c3;
+  color: #646464;
+  display: block; }
+  .resume p {
+    margin: 4em 0; }
+  .resume .user_email, .resume .web_link, .resume a {
+    color: #e53428;
+    text-decoration: none; }
+  .resume [class^="icon-"], .resume [class*=" icon-"] {
+    color: #e53428;
+    font-size: 60px;
+    margin: .5em 0; }
 
 .home {
   text-align: center; }

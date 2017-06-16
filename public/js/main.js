@@ -140,7 +140,10 @@ jQuery(document).ready(function($){
     });
 
     socket.on('complete', function(data){
-        alert('complete !');
+        $('.step-final.resume').show();
+        $('.progress-bar').css({width:'100%'});
+        $('.resume .user_email').text('http://polyptyque.photo/'+data.user_email);
+        $('.resume .web_link').text('http://polyptyque.photo/'+data.uid);
     });
 
     socket.on('go_home', function(data){
