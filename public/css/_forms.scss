@@ -73,7 +73,7 @@ a,button,input{
 }
 
 .step-form{
-	input[type=text]{
+	input[type=text], input[type=email]{
 		&.form-control{
 			font-size:30px;
 			padding: 40px;

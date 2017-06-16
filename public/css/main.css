@@ -451,7 +451,7 @@ a.red-button, button.red-button, input.red-button {
 .input-hidden {
   display: none; }
 
-.step-form input[type=text].form-control {
+.step-form input[type=text].form-control, .step-form input[type=email].form-control {
   font-size: 30px;
   padding: 40px;
   border-radius: 80px;

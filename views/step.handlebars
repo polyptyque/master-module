@@ -20,6 +20,10 @@
                 <input id="field-{{id}}" name="{{id}}" type="text" placeholder="{{placeholder}}" class="form-control" value="{{response}}" />
                 {{/ifvalue}}
 
+                {{#ifvalue type value="email"}}
+                <input id="field-{{id}}" name="{{id}}" type="email" placeholder="{{placeholder}}" class="form-control" value="{{response}}" />
+                {{/ifvalue}}
+
                 {{#ifvalue type value="textarea"}}
                 <textarea id="field-{{id}}" rows="{{rows}}" name="{{id}}" type="text" placeholder="{{placeholder}}" class="form-control" ></textarea>
                 {{/ifvalue}}

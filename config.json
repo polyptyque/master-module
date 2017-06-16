@@ -32,7 +32,7 @@
         },
         {
           "id":"email",
-          "type":"text",
+          "type":"email",
           "placeholder":"Adresse email"
 
         }
