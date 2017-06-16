@@ -134,10 +134,11 @@ jQuery(document).ready(function($){
     });
 
     socket.on('progress', function(data){
-        console.log('progress', data);
+        var p = data.type == 'local' ? data.progress / 10 : data.progress*.9 + 10;
+        console.log('progress', data, p);
         if(__debug__) return;
-        $('.display-progress .message').text('... '+data.type+' -> '+data.progress+'%');
-        $('.display-progress .progress').css({width:(data.progress)+'%'});
+        $('.display-progress .message').text('... '+data.type+' -> '+p+'%');
+        $('.display-progress .progress').css({width:p+'%'});
     });
 
     socket.on('complete', function(data){

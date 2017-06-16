@@ -207,7 +207,7 @@ function postImage(req, res) {
                 }else{
                     //
                     cm_downloaded ++;
-                    io.emit('progress',{type:'local',progress:10*cm_downloaded/cm_count});
+                    io.emit('progress',{type:'local',progress:cm_downloaded/cm_count});
                     LogEllapsedTime('compute module '+modId+' upload Done. '+cm_downloaded+'/'+cm_count);
                     res.end("Success !"+cm_downloaded+'/'+cm_count);
                     //
@@ -301,7 +301,7 @@ function ftp_complete(req,res,next){
 function ftp_progess(req,res,next){
     res.send('thanks.');
     console.log('ftp_progess',req.body)
-    io.emit('progress',{type:'sftp',progress:req.body.percent});
+    io.emit('progress',{type:'sftp',progress:req.body.progress});
     io.emit('logger',{message:JSON.stringify(req.body),level:LOG_LEVEL_VERBOSE});
 }
 
