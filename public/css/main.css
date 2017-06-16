@@ -440,8 +440,8 @@ a.red-button, button.red-button, input.red-button {
   .input-hidden:checked + .choice {
     background: #e53428;
     color: #FFFFFF; }
-  .choice:hover {
-    background: #646464; }
+    .input-hidden:checked + .choice:hover {
+      background: #646464; }
 
 .input-hidden {
   display: none; }

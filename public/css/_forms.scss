@@ -52,9 +52,9 @@ a,button,input{
 	.input-hidden:checked + & {
 		background:$red;
 		color:$white;
-	}
-	&:hover{
-		background: $grey;
+		&:hover{
+			background: $grey;
+		}
 	}
 }
 
