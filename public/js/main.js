@@ -135,11 +135,13 @@ jQuery(document).ready(function($){
 
     socket.on('progress', function(data){
         console.log('progress', data);
-        $('.display-progress .message').text('... '+data.type);
+        if(__debug__) return;
+        $('.display-progress .message').text('... '+data.type+' -> '+data.progress+'%');
         $('.display-progress .progress').css({width:(data.progress)+'%'});
     });
 
     socket.on('complete', function(data){
+        if(__debug__) return;
         $('.step-final.resume').show();
         $('.progress-bar').css({width:'100%'});
         if(data.user_email){
@@ -156,6 +158,7 @@ jQuery(document).ready(function($){
     });
 
     socket.on('go_home', function(data){
+        if(__debug__) return;
         window.location.href="/"
     });
 
